@@ -1,10 +1,11 @@
 #!/usr/bin/php
 <?php
-use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
+require_once ('path.inc');
+require_once('get_host_info.inc');
+require_once('rabbitMQLib.inc');
 
-#establishing databse connection with mySQL
-$mydb = new mysqli('127.0.0.1','testUser','12345','testdb');
+//establishing databse connection with mySQL
+$mydb = new mysqli('127.0.0.1','dataMan','JAKS','JAKSdb');
 
 if ($mydb->errno != 0)
 {
@@ -24,20 +25,31 @@ if ($mydb->errno != 0)
         exit(0);
 }
 
-#establishing connection to rabbitMQ
+//establishing connection to rabbitMQ
 
 
-$connection = new AMQPStreamConnection('rabbitmq_host', 5672, 'user', 'password');
-$channel = $connection->channel();
+$dbMessage = new rabbitMQClient("testRabbitMQ.ini","testServer");
+if (isset($argv[1]))
+{
+  $msg = $argv[1];
+}
+else
+{
+  $msg = "YOU DID IT -SAMIH";
+}
 
-#sending a message
-$channel->queue_declare('my_queue', false, false, false, false);
-$msg = new AMQPMessage('Database and Rabbit have connected courtesy of samih');
-$channel->basic_publish($msg, '', 'my_queue');
+//sending a message
+$request = array();
+$request['type'] = "Login";
+$request['username'] = "steve";
+$request['password'] = "password";
+$request['message'] = $msg;
+$response = $dbMessage->send_request($request);
+//$response = $dbMessage->publish($request);
 
-echo " [x] Sent 'Hello, RabbitMQ!'\n";
+echo "client received response: ".PHP_EOL;
+print_r($response);
+echo "\n\n";
 
-$channel->close();
-$connection->close();
-$mydb->close();
+echo $argv[0]." END".PHP_EOL;
 ?>
