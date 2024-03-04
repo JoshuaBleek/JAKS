@@ -5,7 +5,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 // Establish a connection to RabbitMQ server
-$connection = new AMQPStreamConnection('localhost', 5672, 'test', 'test');
+$connection = new AMQPStreamConnection('localhost', 5672, 'test', 'test', 'testHost');
 $channel = $connection->channel();
 
 // Declare the queue in case it doesn't exist
@@ -20,7 +20,7 @@ $msg = new AMQPMessage($messageBody, array('delivery_mode' => 2)); // Persistent
 // Publish the message to the queue
 $channel->basic_publish($msg, '', $queue_name);
 
-echo "I'm bidirectional '{$queue_name}'.\n";
+echo "Message sent to '{$queue_name}'.\n";
 
 // Close the channel and the connection
 $channel->close();
