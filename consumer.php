@@ -5,7 +5,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 // Establish a connection to RabbitMQ server with the correct virtual host
-$connection = new AMQPStreamConnection('10.244.168.117', 5672, 'test', 'test', 'testHost');
+$connection = new AMQPStreamConnection('10.244.213.77', 5672, 'test', 'test', 'testHost');
 $channel = $connection->channel();
 
 // Declare the same queue as the producer
