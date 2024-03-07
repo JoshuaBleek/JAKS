@@ -3,21 +3,33 @@
 require_once ('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
+require_once('amqplib');
+require_once('testRabbitMQ.ini');
 
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
+//                      DATABASE
 //establishing databse connection with mySQL
 $mydb = new mysqli('127.0.0.1','dataMan','JAKS','JAKSdb');
-
 if ($mydb->errno != 0)
 {
         echo "failed to connect to database: ". $mydb->error . PHP_EOL;
         exit(0);
 }
-
 echo "successfully connected to database".PHP_EOL;
 
-$query = "select * from students;";
 
+//                      RABBIT MQ
+//establishing connection to rabbitMQ
+$connection = new AMQPStreamConnection('localhost', 5672, $USER, $PASSWORD, $VHOST);
+$channel = $connection->channel();
+// Declare the queue in case it doesn't exist
+$channel->queue_declare($QUEUE);
+
+
+//assigns and executes showing the databse initially
+$query = "select * from User;";
 $response = $mydb->query($query);
 if ($mydb->errno != 0)
 {
@@ -26,31 +38,9 @@ if ($mydb->errno != 0)
         exit(0);
 }
 
-//establishing connection to rabbitMQ
 
 
-$dbMessage = new rabbitMQClient("testRabbitMQ.ini","testServer");
-if (isset($argv[1]))
-{
-  $msg = $argv[1];
-}
-else
-{
-  $msg = "YOU DID IT -SAMIH";
-}
+$channel->basic_consume($QUEUE, '', false, true, false, false, $callback);
 
-//sending a message
-$request = array();
-$request['type'] = "Login";
-$request['username'] = "steve";
-$request['password'] = "password";
-$request['message'] = $msg;
-$response = $dbMessage->send_request($request);
-//$response = $dbMessage->publish($request);
 
-echo "client received response: ".PHP_EOL;
-print_r($response);
-echo "\n\n";
-
-echo $argv[0]." END".PHP_EOL;
 ?>
