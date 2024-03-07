@@ -4,6 +4,7 @@ require_once ('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 
+
 //establishing databse connection with mySQL
 $mydb = new mysqli('127.0.0.1','dataMan','JAKS','JAKSdb');
 
