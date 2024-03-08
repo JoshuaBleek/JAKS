@@ -1,46 +1,53 @@
 #!/usr/bin/php
 <?php
-require_once ('path.inc');
+require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
-require_once('amqplib');
-require_once('testRabbitMQ.ini');
+require_once('vendor/autoload.php');
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-//                      DATABASE
-//establishing databse connection with mySQL
-$mydb = new mysqli('127.0.0.1','dataMan','JAKS','JAKSdb');
-if ($mydb->errno != 0)
-{
-        echo "failed to connect to database: ". $mydb->error . PHP_EOL;
-        exit(0);
+// Database Connection
+$mydb = new mysqli('10.244.213.77', 'dataMan', 'JAKS', 'JAKSdb');
+if ($mydb->errno != 0) {
+    echo "Failed to connect to database: " . $mydb->error . PHP_EOL;
+    exit(0);
 }
-echo "successfully connected to database".PHP_EOL;
+echo "Successfully connected to database" . PHP_EOL;
 
-
-//                      RABBIT MQ
-//establishing connection to rabbitMQ
-$connection = new AMQPStreamConnection('localhost', 5672, $USER, $PASSWORD, $VHOST);
+// RabbitMQ Connection
+$connection = new AMQPStreamConnection('10.244.168.117', 5672, 'test', 'test', 'testHost');
 $channel = $connection->channel();
-// Declare the queue in case it doesn't exist
-$channel->queue_declare($QUEUE);
 
+$queue_name = 'testQueue';
+$durable = true;
+$channel->queue_declare($queue_name, false, $durable, false, false);
 
-//assigns and executes showing the databse initially
-$query = "select * from User;";
-$response = $mydb->query($query);
-if ($mydb->errno != 0)
-{
-        echo "failed to execute query:".PHP_EOL;
-        echo __FILE__.':'.__LINE__.":error: ".$mydb->error.PHP_EOL;
-        exit(0);
+$callback = function ($msg) use ($mydb) {
+    echo "Received: ", $msg->body, "\n";
+    
+    // Decode the message and extract username and password
+    $data = json_decode($msg->body, true);
+    $username = $mydb->real_escape_string($data['username']);
+    $password = $mydb->real_escape_string($data['password']); // Consider hashing the password
+
+    // Insert Query
+    $insertQuery = "INSERT INTO user (username, password) VALUES ('$username', '$password')";
+    $selectQuery =  "SELECT * FROM user;";
+    if ($mydb->query($insertQuery) === TRUE) {
+        echo "New record created successfully" . PHP_EOL;
+    } else {
+        echo "Error: " . $insertQuery . "\n" . $mydb->error . PHP_EOL;
+    }
+};
+
+$channel->basic_consume($queue_name, '', false, true, false, false, $callback);
+
+while ($channel->is_consuming()) {
+    $channel->wait();
 }
 
-
-
-$channel->basic_consume($QUEUE, '', false, true, false, false, $callback);
-
-
+$channel->close();
+$connection->close();
 ?>
