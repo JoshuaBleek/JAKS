@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <!-- Add any additional head elements here -->
+</head>
+<body>
+    <form id="loginForm" onsubmit="sendLoginData(); return false;">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </form>
+
+    <script>
+        function sendLoginData() {
+    var xhr = new XMLHttpRequest();
+    var url = "http://10.244.168.117/frontendproducer.php"; // URL of your producer.php script
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log('Response:', xhr.responseText);
+            } else {
+                console.error('Error:', xhr.statusText);
+            }
+        }
+    };
+
+    var data = JSON.stringify({
+        "username": document.getElementById("username").value,
+        "password": document.getElementById("password").value
+    });
+
+    xhr.send(data);
+}
+
+    </script>
+</body>
+</html>

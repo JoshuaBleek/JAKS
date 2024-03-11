@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ff3c1417bff7d25cb4ab185ead4d1571bff75274',
+        'reference' => '11c9c08a79132c6974c413b82b21160fce223265',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ff3c1417bff7d25cb4ab185ead4d1571bff75274',
+            'reference' => '11c9c08a79132c6974c413b82b21160fce223265',
             'dev_requirement' => false,
         ),
         'paragonie/constant_time_encoding' => array(
