@@ -1,56 +1,53 @@
 #!/usr/bin/php
 <?php
-require_once ('path.inc');
+require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
+require_once('vendor/autoload.php');
 
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
-//establishing databse connection with mySQL
-$mydb = new mysqli('127.0.0.1','dataMan','JAKS','JAKSdb');
+// Database Connection
+$mydb = new mysqli('10.244.213.77', 'dataMan', 'JAKS', 'JAKSdb');
+if ($mydb->errno != 0) {
+    echo "Failed to connect to database: " . $mydb->error . PHP_EOL;
+    exit(0);
+}
+echo "Successfully connected to database" . PHP_EOL;
 
-if ($mydb->errno != 0)
-{
-        echo "failed to connect to database: ". $mydb->error . PHP_EOL;
-        exit(0);
+// RabbitMQ Connection
+$connection = new AMQPStreamConnection('10.244.168.117', 5672, 'test', 'test', 'testHost');
+$channel = $connection->channel();
+
+$queue_name = 'testQueue';
+$durable = true;
+$channel->queue_declare($queue_name, false, $durable, false, false);
+
+$callback = function ($msg) use ($mydb) {
+    echo "Received: ", $msg->body, "\n";
+    
+    // Decode the message and extract username and password
+    $data = json_decode($msg->body, true);
+    $username = $mydb->real_escape_string($data['username']);
+    $password = $mydb->real_escape_string($data['password']); // Consider hashing the password
+
+    // Insert Query
+    $insertQuery = "INSERT INTO user (username, password) VALUES ('$username', '$password')";
+    $selectQuery =  "SELECT * FROM user;";
+    if ($mydb->query($insertQuery) === TRUE) {
+        echo "New record created successfully" . PHP_EOL;
+    } else {
+        echo "Error: " . $insertQuery . "\n" . $mydb->error . PHP_EOL;
+    }
+};
+
+$channel->basic_consume($queue_name, '', false, true, false, false, $callback);
+
+while ($channel->is_consuming()) {
+    $channel->wait();
 }
 
-echo "successfully connected to database".PHP_EOL;
-
-$query = "select * from students;";
-
-$response = $mydb->query($query);
-if ($mydb->errno != 0)
-{
-        echo "failed to execute query:".PHP_EOL;
-        echo __FILE__.':'.__LINE__.":error: ".$mydb->error.PHP_EOL;
-        exit(0);
-}
-
-//establishing connection to rabbitMQ
-
-
-$dbMessage = new rabbitMQClient("testRabbitMQ.ini","testServer");
-if (isset($argv[1]))
-{
-  $msg = $argv[1];
-}
-else
-{
-  $msg = "YOU DID IT -SAMIH";
-}
-
-//sending a message
-$request = array();
-$request['type'] = "Login";
-$request['username'] = "steve";
-$request['password'] = "password";
-$request['message'] = $msg;
-$response = $dbMessage->send_request($request);
-//$response = $dbMessage->publish($request);
-
-echo "client received response: ".PHP_EOL;
-print_r($response);
-echo "\n\n";
-
-echo $argv[0]." END".PHP_EOL;
+$channel->close();
+$connection->close();
 ?>
