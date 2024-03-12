@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .question-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .option {
+            width: 48%;
+            background-color: #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+        .option.selected {
+            background-color: #555;
+            color: #fff;
+        }
+    </style>
+    <!-- Add any additional head elements here -->
+</head>
+<body>
+    <header>
+        <h1>JAKS GlideGuide</h1>
+        <div class="logo-container">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+    </header>
+    
+    <nav>
+        <!-- Add logo container to the top left corner -->
+        <a href="homepage.html">Home</a>
+        <a href="flight_view.html">Flight View</a>
+        <a href="payments.html">Payment</a>
+        <a href="#rate-destination">Rate Destination</a>
+        <a href="questionnaire.html">Questionnaire</a>
+        <a href="#refer-a-friend">Refer a Friend</a>
+        <a href="upcoming_flights.html">Upcoming Flights</a>
+        <a href="#cancel-flight">Cancel Flight</a>
+        <div class="right-links">
+            <a href="index.html">Login</a>
+            <a href="register_user.html">Register</a>
+        </div>
+    </nav>
+    <h1>Questionnaire</h1>
+
+    <div class="question-container">
+<!-- Question 1 -->
+<div class="question">
+    <p>How would you best describe yourself?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Adventurous</div>
+        <div class="option" onclick="selectOption(this)">Reflective</div>
+        <div class="option" onclick="selectOption(this)">Nonchalant</div>
+        <div class="option" onclick="selectOption(this)">Tired</div>
+    </div>
+</div>
+
+<!-- Question 2 -->
+<div class="question">
+    <p>What is most like your hobby?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Reading</div>
+        <div class="option" onclick="selectOption(this)">Physical Activity</div>
+        <div class="option" onclick="selectOption(this)">Relaxing</div>
+        <div class="option" onclick="selectOption(this)">Art</div>
+    </div>
+</div>
+
+<!-- Question 3 -->
+<div class="question">
+    <p>Favourite type of music?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Rap</div>
+        <div class="option" onclick="selectOption(this)">80s</div>
+        <div class="option" onclick="selectOption(this)">Country</div>
+        <div class="option" onclick="selectOption(this)">K-pop</div>
+    </div>
+</div>
+
+<!-- Question 4 -->
+<div class="question">
+    <p>What are you doing Saturday night?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Staying home</div>
+        <div class="option" onclick="selectOption(this)">Partying</div>
+        <div class="option" onclick="selectOption(this)">Going to a nice dinner</div>
+        <div class="option" onclick="selectOption(this)">Video games</div>
+    </div>
+</div>
+
+<!-- Question 5 -->
+<div class="question">
+    <p>Favourite animal?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Cat</div>
+        <div class="option" onclick="selectOption(this)">Dragon</div>
+        <div class="option" onclick="selectOption(this)">Polar Bear</div>
+        <div class="option" onclick="selectOption(this)">Birds</div>
+    </div>
+</div>
+
+        <!-- Submit Button -->
+        <button onclick="submitQuestionnaire()">Submit</button>
+    </div>
+    <script>
+        // Function to handle option selection
+        function selectOption(optionElement) {
+            // Remove the 'selected' class from all options in the current question
+            var currentQuestionOptions = optionElement.parentNode.children;
+            for (var i = 0; i < currentQuestionOptions.length; i++) {
+                currentQuestionOptions[i].classList.remove('selected');
+            }
+
+            // Add the 'selected' class to the clicked option
+            optionElement.classList.add('selected');
+        }
+
+        // Function to submit the questionnaire
+        function submitQuestionnaire() {
+            // Add logic to handle the submitted answers
+            var selectedOptions = document.querySelectorAll('.option.selected');
+            var answers = Array.from(selectedOptions).map(function(option) {
+                return option.textContent.trim();
+            });
+            alert('Selected answers: ' + answers.join(', '));
+        }
+    </script>
+</body>
+</html>

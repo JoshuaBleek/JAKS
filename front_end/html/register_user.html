@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login Page</title>
+    <title>Register Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,8 +21,8 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative; /* Add this to make positioning relative */
-            text-align: center; /* Center the content */
+            position: relative;
+            text-align: center;
         }
 
         label {
@@ -66,29 +66,34 @@
             text-decoration: underline;
         }
 
-        /* Add styles for the logo */
         #logo {
-            margin-bottom: 15px; /* Add margin for spacing */
+            margin-bottom: 15px;
         }
 
-        /* Adjust the width of the logo */
         #logo img {
-            width: 300px; /* Adjust the size as needed */
+            width: 300px;
             height: auto;
         }
     </style>
     <!-- Add any additional head elements here -->
 </head>
 <body>
-    <h1>Login Page</h1>
+    <h1>Register Page</h1>
     <form id="registerForm" onsubmit="sendRegisterData(); return false;">
-        <!-- Move the logo inside the form, above the "Username" field -->
         <div id="logo">
             <a href="homepage.html">
                 <img src="jaks_logo.png" alt="JAKS Logo">
             </a>
         </div>
 
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
         <div>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -98,35 +103,44 @@
             <input type="password" id="password" name="password" required>
         </div>
         <div>
-            <button type="submit">Login</button>
+            <button type="submit">Register</button>
         </div>
-        <p>Don't have an account? <a href="register_user.html">Sign Up!</a></p>
-        <p>Already have an account? <a href="homepage.html">Go back to the homepage</a></p>
+        <p>Already have an account? <a href="index.html">Login here!</a></p>
     </form>
 
     <script>
         function sendRegisterData() {
-            var xhr = new XMLHttpRequest();
-            var url = "http://10.244.168.117/frontendproducer.php"; // URL of your producer.php script
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
+            // Check if username is unique before sending data
+            var existingUsernames = ["user1", "user2"]; // Replace with your actual list of existing usernames
+            var enteredUsername = document.getElementById("username").value;
 
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log('Response:', xhr.responseText);
-                    } else {
-                        console.error('Error:', xhr.statusText);
+            if (existingUsernames.includes(enteredUsername)) {
+                alert("Username already exists. Please choose another one.");
+            } else {
+                var xhr = new XMLHttpRequest();
+                var url = "http://10.244.168.117/frontendproducer.php"; // URL of your producer.php script
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            console.log('Response:', xhr.responseText);
+                        } else {
+                            console.error('Error:', xhr.statusText);
+                        }
                     }
-                }
-            };
+                };
 
-            var data = JSON.stringify({
-                "username": document.getElementById("username").value,
-                "password": document.getElementById("password").value
-            });
+                var data = JSON.stringify({
+                    "name": document.getElementById("name").value,
+                    "email": document.getElementById("email").value,
+                    "username": document.getElementById("username").value,
+                    "password": document.getElementById("password").value
+                });
 
-            xhr.send(data);
+                xhr.send(data);
+            }
         }
     </script>
 </body>
