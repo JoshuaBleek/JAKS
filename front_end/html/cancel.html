@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Flight</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>JAKS GlideGuide</h1>
+    <div class="logo-container">
+        <a href="homepage.html">
+            <img src="jaks_logo.png" alt="JAKS Logo">
+        </a>
+    </div>
+</header>
+
+<nav>
+    <a href="homepage.html">Home</a>
+    <a href="flight_view.html">Flight View</a>
+    <a href="payments.html">Payment</a>
+    <a href="#rate.html">Rate Destination</a>
+    <a href="questionnaire.html">Questionnaire</a>
+    <a href="#refer.html">Refer a Friend</a>
+    <a href="upcoming_flights.html">Upcoming Flights</a>
+    <a href="#cancel.html">Cancel Flight</a>
+    <div class="right-links">
+        <a href="index.html">Login</a>
+        <a href="register_user.html">Register</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Cancel Flight</h2>
+    <p>Are you sure you want to cancel your flight?</p>
+    <button id="cancelFlight">Yes, Cancel My Flight</button>
+</div>
+
+<script>
+document.getElementById('cancelFlight').addEventListener('click', function() {
+    var confirmCancel = confirm("Confirm cancellation?");
+    if (confirmCancel) {
+        // If they confirm, redirect to login page
+        window.location.href = 'index.html';
+    } else {
+        // If they cancel, do nothing or notify the user
+        alert("Cancellation process stopped.");
+    }
+});
+</script>
+
+</body>
+</html>
