@@ -25,3 +25,4 @@ echo "Message sent to '{$queue_name}'.\n";
 // Close the channel and the connection
 $channel->close();
 $connection->close();
+?>
