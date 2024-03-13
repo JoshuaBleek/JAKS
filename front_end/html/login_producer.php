@@ -1,5 +1,9 @@
 <?php
 
+header('Access-Control-Allow-Origin: *'); // Allows all origins
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Adjust methods as needed
+header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Include any other headers you need
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -15,12 +19,12 @@ try {
     $input = json_decode($inputJSON, true);
 
     $username = $input['username'];
-    $password = $input['password']; // consider hashing the password
+    $password = $input['password']; // Consider hashing the password
 
     $connection = new AMQPStreamConnection('localhost', 5672, 'test', 'test', 'testHost');
     $channel = $connection->channel();
 
-    $queue_name = 'testQueue';
+    $queue_name = 'loginQueue';
     $durable = true;
     $channel->queue_declare($queue_name, false, $durable, false, false);
 
@@ -29,12 +33,12 @@ try {
 
     $channel->basic_publish($msg, '', $queue_name);
 
-    echo "Login data sent for user '{$username}'.\n";
+    echo json_encode(["message" => "Login data sent for user '{$username}'."]); // Return a success message
 
     $channel->close();
     $connection->close();
 } catch (Exception $e) {
     http_response_code(500);
-    echo "Error: " . $e->getMessage();
+    echo json_encode(["error" => "Error: " . $e->getMessage()]); // Return an error message
 }
 ?>

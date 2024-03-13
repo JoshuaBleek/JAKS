@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #f0f0f0;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .logo-container img {
+            width: 100px; /* Adjust based on your logo's size */
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            background-color: #007bff;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            margin: 0 10px;
+        }
+        .right-links {
+            display: flex;
+        }
+        .payment-form {
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        .error {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>JAKS GlideGuide</h1>
+    <div class="logo-container">
+        <a href="homepage.html">
+            <img src="jaks_logo.png" alt="JAKS Logo">
+        </a>
+    </div>
+</header>
+
+<nav>
+    <a href="homepage.html">Home</a>
+    <a href="flight_view.html">Flight View</a>
+    <a href="payments.html">Payment</a>
+    <a href="#rate-destination">Rate Destination</a>
+    <a href="questionnaire.html">Questionnaire</a>
+    <a href="#refer-a-friend">Refer a Friend</a>
+    <a href="upcoming_flights.html">Upcoming Flights</a>
+    <a href="#cancel-flight">Cancel Flight</a>
+    <div class="right-links">
+        <a href="index.html">Login</a>
+        <a href="register_user.html">Register</a>
+    </div>
+</nav>
+
+<div class="payment-form">
+    <h2>Mock Payment Information</h2>
+    <form id="paymentForm">
+        <div class="form-group">
+            <label for="nameOnCard">Name on Card</label>
+            <input type="text" id="nameOnCard" required>
+            <div class="error" id="nameError"></div>
+        </div>
+        <div class="form-group">
+            <label for="cardNumber">Card Number</label>
+            <input type="text" id="cardNumber" pattern="\d*" minlength="16" maxlength="16" required>
+            <div class="error" id="cardNumberError"></div>
+        </div>
+        <div class="form-group">
+            <label for="expiryDate">Expiry Date (MM/YYYY)</label>
+            <input type="text" id="expiryDate" placeholder="MM/YYYY" required>
+            <div class="error" id="expiryDateError"></div>
+        </div>
+        <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" pattern="\d*" minlength="3" maxlength="3" required>
+            <div class="error" id="cvvError"></div>
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" required>
+            <div class="error" id="addressError"></div>
+        </div>
+        <button type="submit">Submit Payment</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('paymentForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Clear previous error messages
+    document.getElementById('nameError').textContent = '';
+    document.getElementById('cardNumberError').textContent = '';
+    document.getElementById('expiryDateError').textContent = '';
+    document.getElementById('cvvError').textContent = '';
+    document.getElementById('addressError').textContent = '';
+
+    let isValid = true;
+
+    let nameOnCard = document.getElementById('nameOnCard').value;
+    if(nameOnCard.trim().length === 0) {
+        document.getElementById('nameError').textContent = 'Name on card is required.';
+        isValid = false;
+    }
+
+    let cardNumber = document.getElementById('cardNumber').value;
+    if(cardNumber.length !== 16 || !(/^\d+$/.test(cardNumber))) {
+        document.getElementById('cardNumberError').textContent = 'Enter a valid 16-digit card number.';
+        isValid = false;
+    }
+
+    let expiryDate = document.getElementById('expiryDate').value;
+    let expiryDateParts = expiryDate.split('/');
+    if(expiryDateParts.length !== 2 || expiryDateParts[0].length !== 2 || expiryDateParts[1].length !== 4 || isNaN(Date.parse(expiryDateParts[1] + "-" + expiryDateParts[0] + "-01"))) {
+        document.getElementById('expiryDateError').textContent = 'Enter a valid expiry date (MM/YYYY).';
+        isValid = false;
+    }
+
+    let cvv = document.getElementById('cvv').value;
+    if(cvv.length !== 3 || !(/^\d+$/.test(cvv))) {
+        document.getElementById('cvvError').textContent = 'Enter a valid 3-digit CVV.';
+        isValid = false;
+    }
+
+    let address = document.getElementById('address').value;
+    if(address.trim().length === 0) {
+        document.getElementById('addressError').textContent = 'Address is required.';
+        isValid = false;
+    }
+
+    if(isValid) {
+        alert("This is a mock payment submission. No real payment processing is performed.");
+        document.getElementById('paymentForm').reset();
+    }
+});
+</script>
+
+</body>
+</html>
+

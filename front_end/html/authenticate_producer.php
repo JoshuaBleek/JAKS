@@ -18,27 +18,41 @@ try {
     $inputJSON = file_get_contents('php://input');
     $input = json_decode($inputJSON, true);
 
+    // Retrieve all fields from input
+    $name = $input['name'];
+    $email = $input['email'];
     $username = $input['username'];
-    $password = $input['password']; // consider hashing the password
+    $password = $input['password']; // Consider hashing the password
 
+    // RabbitMQ connection settings
     $connection = new AMQPStreamConnection('localhost', 5672, 'test', 'test', 'testHost');
     $channel = $connection->channel();
 
-    $queue_name = 'testQueue';
+    // Declare the queue
+    $queue_name = 'authenticateQueue';
     $durable = true;
     $channel->queue_declare($queue_name, false, $durable, false, false);
 
-    $messageBody = json_encode(array('username' => $username, 'password' => $password));
-    $msg = new AMQPMessage($messageBody, array('delivery_mode' => 2));
+    // Prepare the message
+    $messageBody = json_encode([
+        'name' => $name, 
+        'email' => $email, 
+        'username' => $username, 
+        'password' => $password
+    ]);
+    $msg = new AMQPMessage($messageBody, ['delivery_mode' => 2]);
 
+    // Publish the message
     $channel->basic_publish($msg, '', $queue_name);
 
-    echo "Login data sent for user '{$username}'.\n";
+    // Return a success message
+    echo json_encode(["message" => "Registration data sent for user '{$username}'."]);
 
+    // Close the channel and connection
     $channel->close();
     $connection->close();
 } catch (Exception $e) {
     http_response_code(500);
-    echo "Error: " . $e->getMessage();
+    echo json_encode(["error" => "Error: " . $e->getMessage()]);
 }
 ?>
