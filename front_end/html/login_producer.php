@@ -1,13 +1,11 @@
 <?php
-
-header('Access-Control-Allow-Origin: *'); // Allows all origins
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Adjust methods as needed
-header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Include any other headers you need
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
 
 require_once 'vendor/autoload.php';
 
@@ -19,26 +17,41 @@ try {
     $input = json_decode($inputJSON, true);
 
     $username = $input['username'];
-    $password = $input['password']; // Consider hashing the password
+    $password = $input['password'];
 
     $connection = new AMQPStreamConnection('localhost', 5672, 'test', 'test', 'testHost');
     $channel = $connection->channel();
 
-    $queue_name = 'loginQueue';
-    $durable = true;
-    $channel->queue_declare($queue_name, false, $durable, false, false);
+    list($callback_queue) = $channel->queue_declare("", false, false, true, false);
 
-    $messageBody = json_encode(array('username' => $username, 'password' => $password));
-    $msg = new AMQPMessage($messageBody, array('delivery_mode' => 2));
+    $corr_id = uniqid();
+    $response = null;
+    $callback = function ($msg) use ($corr_id, &$response) {
+        if ($msg->get('correlation_id') == $corr_id) {
+            $response = $msg->body;
+        }
+    };
 
-    $channel->basic_publish($msg, '', $queue_name);
+    $channel->basic_consume($callback_queue, '', false, true, false, false, $callback);
 
-    echo json_encode(["message" => "Login data sent for user '{$username}'."]); // Return a success message
+    $messageBody = json_encode(['username' => $username, 'password' => $password]);
+    $msg = new AMQPMessage(
+        $messageBody,
+        ['correlation_id' => $corr_id, 'reply_to' => $callback_queue]
+    );
+
+    $channel->basic_publish($msg, '', 'loginQueue');
+
+    while (!$response) {
+        $channel->wait();
+    }
+
+    echo $response;
 
     $channel->close();
     $connection->close();
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["error" => "Error: " . $e->getMessage()]); // Return an error message
+    echo json_encode(["error" => "Error: " . $e->getMessage()]);
 }
 ?>

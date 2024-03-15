@@ -101,31 +101,36 @@
 
     <script>
         function sendLoginData() {
-            var xhr = new XMLHttpRequest();
-            var url = "http://10.244.168.117/login_producer.php"; // URL of your producer.php script
+    var xhr = new XMLHttpRequest();
+    var url = "http://10.244.168.117/login_producer.php"; // URL of your producer.php script
 
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
 
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (xhr.status === 200) {
-                        alert(response.message); // Show a success message
-                        window.location.href = 'homepage.html'; // Redirect to homepage
-                    } else {
-                        alert('Error: ' + response.error); // Show an error message
-                    }
-                }
-            };
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            var response = JSON.parse(xhr.responseText);
 
-            var data = JSON.stringify({
-                "username": document.getElementById("username").value,
-                "password": document.getElementById("password").value
-            });
-
-            xhr.send(data);
+            if (xhr.status === 200 && response.message === "Login successful") {
+                // Login is successful, store the token and redirect
+                localStorage.setItem('sessionToken', response.session_token);
+                alert('Login successful!');
+                window.location.href = 'homepage.html';
+            } else {
+                // Login is not successful, show an error and stay on the page
+                alert('Login failed: ' + (response.error || 'Invalid credentials'));
+            }
         }
+    };
+
+    var data = JSON.stringify({
+        "username": document.getElementById("username").value,
+        "password": document.getElementById("password").value
+    });
+
+    xhr.send(data);
+}
+
     </script>
 </body>
 </html>

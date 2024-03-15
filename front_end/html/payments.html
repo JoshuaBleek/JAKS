@@ -4,7 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Form</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #f0f0f0;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .logo-container img {
+            width: 100px; /* Adjust based on your logo's size */
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            background-color: #007bff;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            margin: 0 10px;
+        }
+        .right-links {
+            display: flex;
+        }
+        .payment-form {
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        .error {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,11 +83,11 @@
     <a href="homepage.html">Home</a>
     <a href="flight_view.html">Flight View</a>
     <a href="payments.html">Payment</a>
-    <a href="rate.html">Rate Destination</a>
+    <a href="#rate-destination">Rate Destination</a>
     <a href="questionnaire.html">Questionnaire</a>
-    <a href="refer.html">Refer a Friend</a>
+    <a href="#refer-a-friend">Refer a Friend</a>
     <a href="upcoming_flights.html">Upcoming Flights</a>
-    <a href="cancel.html">Cancel Flight</a>
+    <a href="#cancel-flight">Cancel Flight</a>
     <div class="right-links">
         <a href="index.html">Login</a>
         <a href="register_user.html">Register</a>
