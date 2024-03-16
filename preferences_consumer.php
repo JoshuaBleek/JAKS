@@ -41,25 +41,45 @@ $callback = function ($msg) use ($mydb) {
     $favAnimal = $mydb->real_escape_string($data['favAnimal']); 
 
 
-    // First, check if the username and password already exist
-    $checkQuery = "SELECT * FROM user WHERE username = '$username' ";
-    $result = $mydb->query($checkQuery);
+    // // First, check if the username and password already exist
+    // $checkQuery = "SELECT * FROM user WHERE username = '$username' ";
+    // $result = $mydb->query($checkQuery);
     
-    // Insert Query
-    if ($result->num_rows > 0) {
-        // If the user exists, send a message or handle as needed
-        echo "Username and password already exist." . PHP_EOL;
-    } else {
+    // // Insert Query
+    // if ($result->num_rows > 0) {
+    //     // If the user exists, send a message or handle as needed
+    //     echo "Username and password already exist." . PHP_EOL;
+    // } else {
         // If the user does not exist, proceed to insert the new record
-        $insertQuery = "INSERT INTO user (username, describeYourself, hobby, favMusic, satNight, favAnimal) 
-        VALUES ('$username', '$describeYourself', '$hobby', '$favMusic', '$satNight', '$favAnimal')";
+
+
+    // process and calculate the rating number    
+    // Key: A = -3
+    //      H = -1
+    //      M = +1
+    //      S = +2
+    $ratingNum = 1;
+//    $ratingLocation="";   
+    foreach(array($describeYourself, $hobby, $favMusic,  $satNight, $favAnimal) as $x){
+            if ($x[0] == 'A' ){
+                $ratingNum + 2;
+            }else if ($x[0] == 'H' ){
+                $ratingNum + 1;
+            }if ($x[0] == 'M' ){
+                $ratingNum;
+            } else{
+                $ratingNum -1;
+            }
+        }
+
+        $insertQuery = "INSERT INTO user (username, describeYourself, hobby, favMusic, satNight, favAnimal, ratingNum) 
+        VALUES ('$username', '$describeYourself', '$hobby', '$favMusic', '$satNight', '$favAnimal', '$ratingNum')";
 
         if ($mydb->query($insertQuery) == TRUE) {
-            echo "New record created successfully" . PHP_EOL;
+            echo "Preferences oriented successfully" . PHP_EOL;
         } else {
             echo "Error: " . $mydb->error . PHP_EOL;
         }
-    }
 };
 
 
