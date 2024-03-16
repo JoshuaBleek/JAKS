@@ -152,6 +152,10 @@
         <div class="option" onclick="selectOption(this)">Birds</div>
     </div>
 </div>
+<div>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+</div>
 
         <!-- Submit Button -->
         <button onclick="submitQuestionnaire()">Submit</button>
@@ -175,9 +179,30 @@
             var selectedOptions = document.querySelectorAll('.option.selected');
             var answers = Array.from(selectedOptions).map(function(option) {
                 return option.textContent.trim();
+            }); 
+
+            // Ensure there are at least five answers to avoid errors
+            if (answers.length < 5) {
+                alert('Please select at least five options.');
+            return; // Exit the function if there aren't enough answers
+            }
+
+            // Assign the answers to five separate variables
+            var describeYourself = JSON.stringify(answers[0]);
+            var hobby = JSON.stringify(answers[1]);
+            var favMusic = JSON.stringify(answers[2]);
+            var satNight = JSON.stringify(answers[3]);
+            var favAnimal = JSON.stringify(answers[4]);
+            var data = JSON.stringify({
+                "username": document.getElementById("username").value,
+                "describeYourself": answers[0],
+                "hobby": answers[1],
+                "favMusic": answers[2],
+                "satNight": answers[3],
+                "favAnimal": answers[4]
             });
-            alert('Selected answers: ' + answers.join(', '));
-        }
+   xhr.send(data);
+};
     </script>
 </body>
 </html>
