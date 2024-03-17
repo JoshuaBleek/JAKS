@@ -148,6 +148,22 @@ document.getElementById('paymentForm').addEventListener('submit', function(event
             isValid = false;
         }
     }
+    
+
+    var data = JSON.stringify({
+                "name": document.getElementById("nameOnCard").value,
+                "username": document.getElementById("username").value,
+                "cardNum": document.getElementById("cardNumber").value,
+                "expiry": document.getElementById("expiryDate").value,
+                "cvv": document.getElementById("cvv").value,
+                "address": document.getElementById("street").value,
+                "town": document.getElementById("town").value,
+                "zipCode": document.getElementById("zipCode").value,
+                "email": document.getElementById("email").value,
+                "state": document.getElementById("state").value,
+                "country": document.getElementById("country").value,
+            });
+            xhr.send(data);
 });
 </script>
 

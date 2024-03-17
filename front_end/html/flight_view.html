@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight View</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,30 +13,9 @@
             padding: 0;
         }
 
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
+        h1 {
             text-align: center;
-        }
-
-        nav {
-            background-color: #f2f2f2;
-            overflow: hidden;
-        }
-
-        nav a {
-            float: left;
-            display: block;
-            color: black;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        nav a:hover {
-            background-color: #ddd;
-            color: black;
+            margin-top: 20px;
         }
 
         .flight-container {
@@ -67,34 +47,20 @@
             color: #777;
         }
 
-        .search-form {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .form-control {
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .form-control label, .form-control input {
-            margin: 5px;
-        }
-
-        .submit-button {
+        .book-button {
             background-color: #333;
             color: #fff;
             padding: 8px 16px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px;
         }
 
-        .submit-button:hover {
+        .book-button:hover {
             background-color: #555;
         }
     </style>
+    <!-- Add any additional head elements here -->
 </head>
 <body>
     <header>
@@ -105,66 +71,99 @@
             </a>
         </div>
     </header>
-
+    
     <nav>
         <a href="homepage.html">Home</a>
         <a href="flight_view.html">Flight View</a>
         <a href="payments.html">Payment</a>
-        <a href="#rate-destination">Rate Destination</a>
+        <a href="rate.html">Rate Destination</a>
         <a href="questionnaire.html">Questionnaire</a>
-        <a href="#refer-a-friend">Refer a Friend</a>
+        <a href="refer.html">Refer a Friend</a>
         <a href="upcoming_flights.html">Upcoming Flights</a>
-        <a href="#cancel-flight">Cancel Flight</a>
+        <a href="cancel.html">Cancel Flight</a>
         <div class="right-links">
             <a href="index.html">Login</a>
             <a href="register_user.html">Register</a>
         </div>
     </nav>
-
+    
     <h1>Bookable Flights</h1>
-
-    <div class="search-form">
-        <form id="flight-search-form">
-            <div class="form-control">
-                <label for="origin">Origin:</label>
-                <input type="text" id="origin" name="origin" required>
-            </div>
-            <div class="form-control">
-                <label for="destination">Destination:</label>
-                <input type="text" id="destination" name="destination" required>
-            </div>
-            <div class="form-control">
-                <label for="departureDate">Departure Date:</label>
-                <input type="date" id="departureDate" name="departureDate" required>
-            </div>
-            <button type="submit" class="submit-button">Search Flights</button>
-        </form>
+    <div class="flight-container" id="flight-container">
+        <!-- This div will contain flight cards -->
     </div>
-
-    <div class="flight-container" id="flight-list">
-        <!-- Dynamic flight cards will be added here -->
-    </div>
-
     <script>
-        document.getElementById('flight-search-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            var origin = document.getElementById('origin').value;
-            var destination = document.getElementById('destination').value;
-            var departureDate = document.getElementById('departureDate').value;
-
-            var queryURL = 'newapi.php?origin=' + origin + '&destination=' + destination + '&departureDate=' + departureDate;
-
-            fetch(queryURL)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('flight-list').innerHTML = data;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to fetch flight data from Amadeus API
+            function fetchFlightData() {
+                fetch('https://test.api.amadeus.com/v1/security/oauth2/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'grant_type=client_credentials&client_id=AXm9rayIQaHGYN6QEJUWsiy1NrAmwtkr&client_secret=3XepioE3VCVXuY4b'
+                })
+                .then(response => response.json())
+                .then(tokenData => {
+                    const accessToken = tokenData.access_token;
+                    const apiUrl = 'https://test.api.amadeus.com/v1/shopping/flight-destinations?origin=PAR&maxPrice=2000';
+    
+                    fetch(apiUrl, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch flight data');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const flightContainer = document.getElementById('flight-container');
+                        if (!flightContainer) {
+                            throw new Error('Flight container not found');
+                        }
+                        flightContainer.innerHTML = ''; // Clear existing content
+    
+                        data.data.forEach(destination => {
+                            const flightCard = document.createElement('div');
+                            flightCard.classList.add('flight-card');
+    
+                            const destinationName = document.createElement('h2');
+                            destinationName.textContent = `Flight to ${destination.destination}`;
+    
+                            const departureDate = document.createElement('p');
+                            departureDate.textContent = `Departure: ${destination.departureDate}`;
+    
+                            const price = document.createElement('p');
+                            price.textContent = `Price: $${destination.price.total}`;
+    
+                            const bookButton = document.createElement('button');
+                            bookButton.classList.add('book-button');
+                            bookButton.textContent = 'Book Now';
+    
+                            flightCard.appendChild(destinationName);
+                            flightCard.appendChild(departureDate);
+                            flightCard.appendChild(price);
+                            flightCard.appendChild(bookButton);
+    
+                            flightContainer.appendChild(flightCard);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching flight data:', error.message);
+                    });
                 })
                 .catch(error => {
-                    console.error('Error fetching flight data:', error);
-                    document.getElementById('flight-list').innerHTML = '<p>Error loading flights.</p>';
+                    console.error('Error fetching access token:', error.message);
                 });
+            }
+    
+            // Call the function to fetch flight data when the page loads
+            fetchFlightData();
         });
     </script>
+    
+    <!-- Your content goes here -->
 </body>
 </html>
