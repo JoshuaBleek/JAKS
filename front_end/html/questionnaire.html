@@ -97,7 +97,11 @@
     <h1>Questionnaire</h1>
 
     <div class="question-container">
-<!-- Question 1 -->
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+        <!-- Question 1 -->
 <div class="question">
     <p>How would you best describe yourself?</p>
     <div class="options">
@@ -151,10 +155,7 @@
         <div class="option" onclick="selectOption(this)">Swan</div>
     </div>
 </div>
-<div>
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
-</div>
+
 
         <!-- Submit Button -->
         <button onclick="submitQuestionnaire()">Submit</button>
