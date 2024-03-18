@@ -28,7 +28,10 @@
     <a href="refer.html">Refer a Friend</a>
     <a href="upcoming_flights.html">Upcoming Flights</a>
     <a href="cancel.html">Cancel Flight</a>
-    <div class="right-links" id="userLinks"></div>
+    <div class="right-links">
+        <a href="index.html">Login</a>
+        <a href="register_user.html">Register</a>
+    </div>
 </nav>
 
 <div class="project-description">
@@ -37,24 +40,7 @@
         <p>This API is designed to provide comprehensive and real-time tracking of incoming and outgoing flights. It aims to streamline the integration of flight data into diverse applications, offering accurate and up-to-date information to enhance user experiences across various industries.</p>
     </div>
 </div>
-<script>
-    var username = sessionStorage.getItem("username");
-    var userLinks = document.getElementById("userLinks");
 
-    if (username) {
-        // If logged in, display the username
-        userLinks.innerHTML = '<span>Welcome, ' + username + '!</span> | <a href="#" id="logout">Logout</a>';
-        
-        // Add logout functionality
-        document.getElementById("logout").addEventListener("click", function() {
-            sessionStorage.removeItem("username");
-            window.location.href = "index.html"; // Redirect to login page
-        });
-    } else {
-        // If not logged in, display login/register links
-        userLinks.innerHTML = '<a href="index.html">Login</a> | <a href="register_user.html">Register</a>';
-    }
-</script>
 </body>
 
 </html>

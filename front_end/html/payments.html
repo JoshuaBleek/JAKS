@@ -137,7 +137,7 @@ document.getElementById('paymentForm').addEventListener('submit', function(event
     validateAddressField('country', 'Country is required.');
 
     if(isValid) {
-        alert("This is a mock payment submission. No real payment processing is performed.");
+        alert("Payment has been sent for processing.");
         document.getElementById('paymentForm').reset();
     }
 
@@ -162,7 +162,6 @@ document.getElementById('paymentForm').addEventListener('submit', function(event
         };
 
         var data = JSON.stringify({
-            "username": "your_username", // Replace this with the actual username
             "name": document.getElementById("nameOnCard").value,
             "cardNum": document.getElementById("cardNumber").value,
             "expiry": document.getElementById("expiryDate").value,
@@ -179,20 +178,7 @@ document.getElementById('paymentForm').addEventListener('submit', function(event
     }
     
 
-    var data = JSON.stringify({
-                "name": document.getElementById("nameOnCard").value,
-                "username": document.getElementById("username").value,
-                "cardNum": document.getElementById("cardNumber").value,
-                "expiry": document.getElementById("expiryDate").value,
-                "cvv": document.getElementById("cvv").value,
-                "address": document.getElementById("street").value,
-                "town": document.getElementById("town").value,
-                "zipCode": document.getElementById("zipCode").value,
-                "email": document.getElementById("email").value,
-                "state": document.getElementById("state").value,
-                "country": document.getElem56entById("country").value,
-            });
-            xhr.send(data);
+   
 });
 </script>
 <script>

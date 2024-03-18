@@ -82,8 +82,10 @@
         <a href="upcoming_flights.html">Upcoming Flights</a>
         <a href="cancel.html">Cancel Flight</a>
         <div class="right-links">
-            <a href="index.html">Login</a>
-            <a href="register_user.html">Register</a>
+            <span id="usernameDisplay"></span>
+    <button id="logoutButton" style="display:none;">Logout</button>
+    <a href="index.html" style="display:none;" id="loginLink">Login</a>
+    <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
         </div>
     </nav>
     
@@ -93,7 +95,22 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Function to fetch flight data from Amadeus API
+
+            const username = localStorage.getItem('username');
+        if (username) {
+            document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
+            document.getElementById('logoutButton').style.display = 'inline';
+            document.getElementById('loginLink').style.display = 'none';
+            document.getElementById('registerLink').style.display = 'none';
+
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                localStorage.removeItem('username'); // Remove username from storage
+                window.location.href = 'index.html'; // Redirect to index.html
+            });
+        }
+    });
+
+
             function fetchFlightData() {
                 fetch('https://test.api.amadeus.com/v1/security/oauth2/token', {
                     method: 'POST',
@@ -176,7 +193,7 @@
     
             // Call the function to fetch flight data when the page loads
             fetchFlightData();
-        });
+        
     </script>
     
     <!-- Your content goes here -->
