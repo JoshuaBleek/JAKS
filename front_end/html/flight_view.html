@@ -128,25 +128,40 @@
                         data.data.forEach(destination => {
                             const flightCard = document.createElement('div');
                             flightCard.classList.add('flight-card');
-    
+
                             const destinationName = document.createElement('h2');
                             destinationName.textContent = `Flight to ${destination.destination}`;
-    
+
                             const departureDate = document.createElement('p');
                             departureDate.textContent = `Departure: ${destination.departureDate}`;
-    
+
                             const price = document.createElement('p');
                             price.textContent = `Price: $${destination.price.total}`;
-    
+
                             const bookButton = document.createElement('button');
                             bookButton.classList.add('book-button');
                             bookButton.textContent = 'Book Now';
-    
+                            // Updated event listener
+                            bookButton.addEventListener('click', function() {
+                                // Example flight data object
+                                const flightData = {
+                                    destination: destination.destination,
+                                    departureDate: destination.departureDate,
+                                    price: destination.price.total
+                                };
+
+                                // Store in localStorage
+                                localStorage.setItem('bookedFlight', JSON.stringify(flightData));
+
+                                window.location.href = 'payments.html?from=booking';
+                            });
+
+
                             flightCard.appendChild(destinationName);
                             flightCard.appendChild(departureDate);
                             flightCard.appendChild(price);
                             flightCard.appendChild(bookButton);
-    
+
                             flightContainer.appendChild(flightCard);
                         });
                     })

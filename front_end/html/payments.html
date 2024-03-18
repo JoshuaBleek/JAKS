@@ -148,6 +148,35 @@ document.getElementById('paymentForm').addEventListener('submit', function(event
             isValid = false;
         }
     }
+   
+    if (isValid) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "payment_producer.php", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                console.log(json.message);
+            }
+        };
+
+        var data = JSON.stringify({
+            "username": "your_username", // Replace this with the actual username
+            "name": document.getElementById("nameOnCard").value,
+            "cardNum": document.getElementById("cardNumber").value,
+            "expiry": document.getElementById("expiryDate").value,
+            "cvv": document.getElementById("cvv").value,
+            "address": document.getElementById("street").value,
+            "town": document.getElementById("town").value,
+            "zipCode": document.getElementById("zipCode").value,
+            "state": document.getElementById("state").value,
+            "country": document.getElementById("country").value
+            // Add any other fields as necessary
+        });
+
+        xhr.send(data);
+    }
     
 
     var data = JSON.stringify({
@@ -161,11 +190,24 @@ document.getElementById('paymentForm').addEventListener('submit', function(event
                 "zipCode": document.getElementById("zipCode").value,
                 "email": document.getElementById("email").value,
                 "state": document.getElementById("state").value,
-                "country": document.getElementById("country").value,
+                "country": document.getElem56entById("country").value,
             });
             xhr.send(data);
 });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromBooking = urlParams.get('from') === 'booking';
 
+        if (!fromBooking) {
+            // Uncomment and modify as needed:
+            // document.getElementById('payment-form').style.display = 'none';
+            // OR
+             alert('Please book a flight before making a payment.');
+             window.location.href = 'flight_view.html';
+        }
+    });
+</script>
 </body>
 </html>
