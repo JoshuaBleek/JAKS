@@ -32,7 +32,7 @@ $callback = function ($msg) use ($mydb) {
     
     // Decode the message and extract username and password
     $data = json_decode($msg->body, true);
-    $username = $mydb->real_escape_string($data['username']);
+ //   $username = $mydb->real_escape_string($data['username']);
     $name = $mydb->real_escape_string($data['name']);
     $cardNum = $mydb->real_escape_string($data['cardNum']);
     $expiry = $mydb->real_escape_string($data['expiry']);
@@ -45,15 +45,15 @@ $callback = function ($msg) use ($mydb) {
     $amount = $mydb->real_escape_string($data['amount']);
 
     // First, check if the username and password already exist
-    $checkQuery = "SELECT * FROM user WHERE username = '$username'";
-    $result = $mydb->query($checkQuery);
+//    $checkQuery = "SELECT * FROM user WHERE username = '$username'";
+ //   $result = $mydb->query($checkQuery);
     
     // Insert Query
-    if ($result->num_rows > 0) {
+//    if ($result->num_rows > 0) {
         // if user does  exist process the payment
 
-        $insertQuery = "INSERT INTO userPayment (username, name, cardNum, expiry, cvv, address, country, state, town, zipcode, amount) 
-        VALUES ('$username', '$name', '$cardNum', '$expiry', '$cvv', '$address', '$country', '$state', '$town', '$zipcode', '$amount')";
+        $insertQuery = "INSERT INTO userPayment (name, cardNum, expiry, cvv, address, country, state, town, zipcode, amount) 
+        VALUES ( '$name', '$cardNum', '$expiry', '$cvv', '$address', '$country', '$state', '$town', '$zipcode', '$amount')";
 
         if ($mydb->query($insertQuery) == TRUE) {
             echo "payment processed successfully" . PHP_EOL;
@@ -61,10 +61,10 @@ $callback = function ($msg) use ($mydb) {
             echo "Error: " . $mydb->error . PHP_EOL;
         }
     
-    } else {
+   // } else {
         // If the user does not exist, reject payment process
-        echo "Username does not exist. Please try again" . PHP_EOL;
-    }
+    //    echo "Username does not exist. Please try again" . PHP_EOL;
+   // }
 };
 
 
