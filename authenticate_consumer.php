@@ -52,7 +52,7 @@ $callback = function ($msg) use ($mydb) {
         $insertQuery = "INSERT INTO user (username, password, email, name) 
         VALUES ('$username', '$hashedPassword', '$email', '$name')";
 
-        if ($mydb->query($insertQuery) == TRUE) {
+        if ($mydb->query($insertQuery) === TRUE) {
             echo "New record created successfully" . PHP_EOL;
         } else {
             echo "Error: " . $mydb->error . PHP_EOL;
