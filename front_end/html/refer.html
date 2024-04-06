@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refer a Friend</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        #usernameDisplay {
+        color: white;
+        margin-right: 10px; /* Optional: adds some spacing between username and logout button */
+    }
+    </style>
 </head>
 <body>
     <header>
@@ -17,18 +23,17 @@
     </header>
     
     <nav>
-        <!-- Add logo container to the top left corner -->
-        <a href="homepage.html">Home</a>
         <a href="flight_view.html">Flight View</a>
         <a href="payments.html">Payment</a>
         <a href="rate.html">Rate Destination</a>
         <a href="questionnaire.html">Questionnaire</a>
         <a href="refer.html">Refer a Friend</a>
         <a href="upcoming_flights.html">Upcoming Flights</a>
-        <a href="cancel.html">Cancel Flight</a>
         <div class="right-links">
-            <a href="index.html">Login</a>
-            <a href="register_user.html">Register</a>
+            <span id="usernameDisplay"></span>
+    <button id="logoutButton" style="display:none;">Logout</button>
+    <a href="index.html" style="display:none;" id="loginLink">Login</a>
+    <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
         </div>
     </nav>
 
@@ -50,6 +55,27 @@
 </div>
 
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+
+const username = localStorage.getItem('username');
+if (username) {
+document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
+document.getElementById('logoutButton').style.display = 'inline';
+document.getElementById('loginLink').style.display = 'none';
+document.getElementById('registerLink').style.display = 'none';
+
+document.getElementById('logoutButton').addEventListener('click', function() {
+localStorage.removeItem('username'); // Clear username from storage
+window.location.href = 'index.html'; // Redirect to the login page
+});
+} else {
+document.getElementById('usernameDisplay').textContent = '';
+document.getElementById('logoutButton').style.display = 'none';
+document.getElementById('loginLink').style.display = 'inline';
+document.getElementById('registerLink').style.display = 'inline';
+}
+});
 document.getElementById('referForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
