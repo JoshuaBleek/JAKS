@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        #usernameDisplay {
+        color: white;
+        margin-right: 10px; /* Optional: adds some spacing between username and logout button */
+    }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .question-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .option {
+            width: 48%;
+            background-color: #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            background-color: #44ff00;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+        .option.selected {
+            background-color: #555;
+            color: #fff;
+        }
+    </style>
+    <!-- Add any additional head elements here -->
+</head>
+<body>
+    <header>
+        <h1>JAKS GlideGuide</h1>
+        <div class="logo-container">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+    </header>
+    
+    <nav>
+        <a href="flight_view.html">Flight View</a>
+        <a href="payments.html">Payment</a>
+        <a href="rate.html">Rate Destination</a>
+        <a href="questionnaire.html">Questionnaire</a>
+        <a href="refer.html">Refer a Friend</a>
+        <a href="upcoming_flights.html">Upcoming Flights</a>
+        <div class="right-links">
+            <span id="usernameDisplay"></span>
+    <button id="logoutButton" style="display:none;">Logout</button>
+    <a href="index.html" style="display:none;" id="loginLink">Login</a>
+    <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
+        </div>
+    </nav>
+    <h1>Questionnaire</h1>
+
+    <div class="question-container">
+<!-- Question 1 -->
+<div class="question">
+    <p>How would you best describe yourself?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Adventurous</div>
+        <div class="option" onclick="selectOption(this)">High-Spirited</div>
+        <div class="option" onclick="selectOption(this)">Mellow</div>
+        <div class="option" onclick="selectOption(this)">Studious</div>
+    </div>
+</div>
+
+<!-- Question 2 -->
+<div class="question">
+    <p>What is most like your hobby?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Acting</div>
+        <div class="option" onclick="selectOption(this)">Hiking</div>
+        <div class="option" onclick="selectOption(this)">Meditation</div>
+        <div class="option" onclick="selectOption(this)">Sketching</div>
+    </div>
+</div>
+
+<!-- Question 3 -->
+<div class="question">
+    <p>Favourite type of music?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Alternative Rock</div>
+        <div class="option" onclick="selectOption(this)">Hip-Hop</div>
+        <div class="option" onclick="selectOption(this)">Modal Jazz</div>
+        <div class="option" onclick="selectOption(this)">Solo Piano</div>
+    </div>
+</div>
+
+<!-- Question 4 -->
+<div class="question">
+    <p>What are you doing Saturday night?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Attending a Party</div>
+        <div class="option" onclick="selectOption(this)">Hot Air Balloon Ride</div>
+        <div class="option" onclick="selectOption(this)">Movie Watching</div>
+        <div class="option" onclick="selectOption(this)">Scrapbooking</div>
+    </div>
+</div>
+
+<!-- Question 5 -->
+<div class="question">
+    <p>Favourite animal?</p>
+    <div class="options">
+        <div class="option" onclick="selectOption(this)">Ant</div>
+        <div class="option" onclick="selectOption(this)">Hummingbird</div>
+        <div class="option" onclick="selectOption(this)">Manatees</div>
+        <div class="option" onclick="selectOption(this)">Swan</div>
+    </div>
+</div>
+<div>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+</div>
+
+        <!-- Submit Button -->
+        <button onclick="submitQuestionnaire()">Submit</button>
+    </div>
+    <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+
+const username = localStorage.getItem('username');
+if (username) {
+document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
+document.getElementById('logoutButton').style.display = 'inline';
+document.getElementById('loginLink').style.display = 'none';
+document.getElementById('registerLink').style.display = 'none';
+
+document.getElementById('logoutButton').addEventListener('click', function() {
+localStorage.removeItem('username'); // Clear username from storage
+window.location.href = 'index.html'; // Redirect to the login page
+});
+} else {
+document.getElementById('usernameDisplay').textContent = '';
+document.getElementById('logoutButton').style.display = 'none';
+document.getElementById('loginLink').style.display = 'inline';
+document.getElementById('registerLink').style.display = 'inline';
+}
+});
+        // Function to handle option selection
+        function selectOption(optionElement) {
+            // Remove the 'selected' class from all options in the current question
+            var currentQuestionOptions = optionElement.parentNode.children;
+            for (var i = 0; i < currentQuestionOptions.length; i++) {
+                currentQuestionOptions[i].classList.remove('selected');
+            }
+
+            // Add the 'selected' class to the clicked option
+            optionElement.classList.add('selected');
+        }
+
+        // Function to submit the questionnaire
+        function submitQuestionnaire() {
+            // Add logic to handle the submitted answers
+            var selectedOptions = document.querySelectorAll('.option.selected');
+            var answers = Array.from(selectedOptions).map(function(option) {
+                return option.textContent.trim();
+            }); 
+
+            // Ensure there are at least five answers to avoid errors
+            if (answers.length < 5) {
+                alert('Please select at least five options.');
+            return; // Exit the function if there aren't enough answers
+            }
+
+            // Assign the answers to five separate variables
+            var describeYourself = JSON.stringify(answers[0]);
+            var hobby = JSON.stringify(answers[1]);
+            var favMusic = JSON.stringify(answers[2]);
+            var satNight = JSON.stringify(answers[3]);
+            var favAnimal = JSON.stringify(answers[4]);
+            var data = JSON.stringify({
+                "username": document.getElementById("username").value,
+                "describeYourself": answers[0],
+                "hobby": answers[1],
+                "favMusic": answers[2],
+                "satNight": answers[3],
+                "favAnimal": answers[4]
+            });
+   xhr.send(data);
+};
+    </script>
+</body>
+</html>

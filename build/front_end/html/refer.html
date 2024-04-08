@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refer a Friend</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        #usernameDisplay {
+        color: white;
+        margin-right: 10px; /* Optional: adds some spacing between username and logout button */
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>JAKS GlideGuide</h1>
+        <div class="logo-container">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+    </header>
+    
+    <nav>
+        <a href="flight_view.html">Flight View</a>
+        <a href="payments.html">Payment</a>
+        <a href="rate.html">Rate Destination</a>
+        <a href="questionnaire.html">Questionnaire</a>
+        <a href="refer.html">Refer a Friend</a>
+        <a href="upcoming_flights.html">Upcoming Flights</a>
+        <div class="right-links">
+            <span id="usernameDisplay"></span>
+    <button id="logoutButton" style="display:none;">Logout</button>
+    <a href="index.html" style="display:none;" id="loginLink">Login</a>
+    <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
+        </div>
+    </nav>
+
+<div class="container">
+    <h2>Refer a Friend</h2>
+    <form id="referForm">
+        <div class="form-group">
+            <label for="friendName">Friend's Name</label>
+            <input type="text" id="friendName" required>
+            <div class="error" id="nameError"></div>
+        </div>
+        <div class="form-group">
+            <label for="friendEmail">Friend's Email</label>
+            <input type="email" id="friendEmail" required>
+            <div class="error" id="emailError"></div>
+        </div>
+        <button type="submit">Submit Referral</button>
+    </form>
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+
+const username = localStorage.getItem('username');
+if (username) {
+document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
+document.getElementById('logoutButton').style.display = 'inline';
+document.getElementById('loginLink').style.display = 'none';
+document.getElementById('registerLink').style.display = 'none';
+
+document.getElementById('logoutButton').addEventListener('click', function() {
+localStorage.removeItem('username'); // Clear username from storage
+window.location.href = 'index.html'; // Redirect to the login page
+});
+} else {
+document.getElementById('usernameDisplay').textContent = '';
+document.getElementById('logoutButton').style.display = 'none';
+document.getElementById('loginLink').style.display = 'inline';
+document.getElementById('registerLink').style.display = 'inline';
+}
+});
+document.getElementById('referForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const friendName = document.getElementById('friendName').value.trim();
+    const friendEmail = document.getElementById('friendEmail').value.trim();
+
+    let isValid = true;
+
+    // Reset error messages
+    nameError.textContent = '';
+    emailError.textContent = '';
+
+    if (!friendName) {
+        nameError.textContent = 'Please enter your friend\'s name.';
+        isValid = false;
+    }
+
+    if (!friendEmail) {
+        emailError.textContent = 'Please enter your friend\'s email.';
+        isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(friendEmail)) { // Simple email validation
+        emailError.textContent = 'Please enter a valid email.';
+        isValid = false;
+    }
+
+    if (isValid) {
+        alert("Referral submitted successfully!");
+        // Here, you might want to actually send the data to a server
+        document.getElementById('referForm').reset();
+    }
+});
+</script>
+
+</body>
+</html>
