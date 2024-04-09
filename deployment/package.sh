@@ -3,7 +3,7 @@
 # Define variables
 APP_NAME="JAKS"
 VERSION=$1 # Version number passed as an argument to the script
-ROOT_DIR="$(dirname "$0")/.." # Go up one directory from the deployment directory
+ROOT_DIR=$(realpath "$(dirname "$0")/..") # Go up one directory from the deployment directory
 BUILD_DIR="${ROOT_DIR}/build"
 DIST_DIR="${ROOT_DIR}/dist"
 PACKAGE_NAME="${APP_NAME}-${VERSION}.zip"
@@ -30,7 +30,6 @@ rm -rf $BUILD_DIR/build $BUILD_DIR/dist $BUILD_DIR/deployment
 echo "Contents of build directory after copying:"
 ls -l $BUILD_DIR
 
-# Compile code if necessary (placeholder for compilation step)
 
 # Create a clean distribution directory
 mkdir -p $DIST_DIR
@@ -42,3 +41,4 @@ cd ..
 
 echo "Build package created: ${DIST_DIR}/${PACKAGE_NAME}"
 
+scp "${DIST_DIR}/${PACKAGE_NAME}" ko58@10.244.108.27:/home/ko58/deploy
