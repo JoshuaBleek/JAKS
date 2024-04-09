@@ -42,3 +42,4 @@ cd ..
 
 echo "Build package created: ${DIST_DIR}/${PACKAGE_NAME}"
 
+scp "${DIST_DIR}/${PACKAGE_NAME}" ko58@192.168.1.227:/home/ko58/deploy
