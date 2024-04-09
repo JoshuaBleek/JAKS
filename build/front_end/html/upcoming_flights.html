@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Flights</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        #usernameDisplay {
+        color: white;
+        margin-right: 10px; /* Optional: adds some spacing between username and logout button */
+    }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .refer-button, .cancel-button {
+    background-color: #5cb85c; /* Green color for refer button */
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: block; /* Make buttons block-level elements */
+    width: 100%; /* Full width */
+}
+
+.refer-button:hover {
+    background-color: #4cae4c; /* Darker green */
+}
+
+.cancel-button {
+    background-color: #d9534f; /* Red color for cancel button */
+    margin-top: 10px; /* Add space above the cancel button */
+}
+
+.cancel-button:hover {
+    background-color: #c9302c; /* Darker red */
+}
+
+
+        .flight-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .flight-card {
+            width: 300px;
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .flight-card:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .flight-card h2 {
+            color: #333;
+        }
+
+        .flight-card p {
+            color: #777;
+        }
+
+        .recommendation {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+    <!-- Add any additional head elements here -->
+</head>
+<body>
+    <header>
+        <h1>JAKS GlideGuide</h1>
+        <div class="logo-container">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+    </header>
+    
+    <nav>
+        <a href="flight_view.html">Flight View</a>
+        <a href="payments.html">Payment</a>
+        <a href="rate.html">Rate Destination</a>
+        <a href="questionnaire.html">Questionnaire</a>
+        <a href="refer.html">Refer a Friend</a>
+        <a href="upcoming_flights.html">Upcoming Flights</a>
+        <div class="right-links">
+            <span id="usernameDisplay"></span>
+    <button id="logoutButton" style="display:none;">Logout</button>
+    <a href="index.html" style="display:none;" id="loginLink">Login</a>
+    <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
+        </div>
+    </nav>
+    <h1>Upcoming Flights</h1>
+    <div class="flight-container">
+       <!--
+        <div class="flight-card">
+            <h2>Flight to Paris</h2>
+            <p>Departure: March 25, 2024</p>
+            <p>Price: $500</p>
+        </div>
+
+       
+        <div class="flight-card">
+            <h2>Business Class to London</h2>
+            <p>Departure: April 5, 2024</p>
+            <p>Price: $1200</p>
+        </div>
+
+       -->
+        
+    </div>
+    <!-- Flight Recommendation -->
+    <div class="recommendation">
+     
+        <script>
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+            const username = localStorage.getItem('username');
+            if (username) {
+            document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
+            document.getElementById('logoutButton').style.display = 'inline';
+            document.getElementById('loginLink').style.display = 'none';
+            document.getElementById('registerLink').style.display = 'none';
+
+            document.getElementById('logoutButton').addEventListener('click', function() {
+            localStorage.removeItem('username'); // Clear username from storage
+            window.location.href = 'index.html'; // Redirect to the login page
+            });
+            } else {
+            document.getElementById('usernameDisplay').textContent = '';
+            document.getElementById('logoutButton').style.display = 'none';
+            document.getElementById('loginLink').style.display = 'inline';
+            document.getElementById('registerLink').style.display = 'inline';
+            }
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+                const flightContainer = document.querySelector('.flight-container');
+                const bookedFlight = JSON.parse(localStorage.getItem('bookedFlight'));
+        
+                if (bookedFlight) {
+                    const flightCard = document.createElement('div');
+                    flightCard.classList.add('flight-card');
+                    flightCard.innerHTML = `
+                        <h2>Flight to ${bookedFlight.destination}</h2>
+                        <p>Departure: ${bookedFlight.departureDate}</p>
+                        <p>Price: $${bookedFlight.price}</p>
+                    `;
+        
+                    const discountInfo = document.createElement('p');
+                    discountInfo.textContent = 'Refer a friend and get a 10% discount on your next booking!';
+                    discountInfo.style.color = "#333"; // Set the text color (change as needed)
+                    discountInfo.style.marginTop = "10px"; // Add some space above the text
+                    discountInfo.style.textAlign = "center"; // Center the text
+                    
+                    flightCard.appendChild(discountInfo);
+                    
+                    const referButton = document.createElement('button');
+                    referButton.classList.add('refer-button');
+                    referButton.textContent = 'Refer a Friend';
+                    referButton.addEventListener('click', function() {
+                        window.location.href = 'refer.html';
+                    });
+                    flightCard.appendChild(referButton);
+        
+                    const cancelButton = document.createElement('button');
+                    cancelButton.classList.add('cancel-button');
+                    cancelButton.textContent = 'Cancel Flight';
+                    cancelButton.addEventListener('click', function() {
+                        localStorage.removeItem('bookedFlight');
+                        window.location.reload();
+                    });
+                   
+                    flightCard.appendChild(cancelButton);
+                    flightContainer.appendChild(flightCard);
+                }
+            });
+        </script>
+        
+</body>
+</html>

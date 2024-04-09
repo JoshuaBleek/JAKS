@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #loginForm {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* Add this to make positioning relative */
+            text-align: center; /* Center the content */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        #logo {
+            margin-bottom: 15px;
+        }
+
+        #logo img {
+            width: 300px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login Page</h1>
+    <form id="loginForm" onsubmit="sendLoginData(); return false;">
+        <div id="logo">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+        <p>Don't have an account? <a href="register_user.html">Sign Up!</a></p>
+       
+    </form>
+
+    <script>
+        function sendLoginData() {
+    var xhr = new XMLHttpRequest();
+    var url = "http://10.244.168.117/login_producer.php"; // URL of your producer.php script
+    var usernameInput = document.getElementById("username").value;
+    
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.message === "Login successful") {
+                        localStorage.setItem('sessionToken', response.session_token);
+                        localStorage.setItem('username', usernameInput); // Store the username input in localStorage
+
+                        window.location.href = 'flight_view.html';
+            } else {
+                alert('Login failed: ' + (response.error || 'Invalid credentials'));
+            }
+        }
+    }
+};
+
+
+    var data = JSON.stringify({
+        "username": document.getElementById("username").value,
+        "password": document.getElementById("password").value
+    });
+
+    xhr.send(data);
+}
+
+    </script>
+</body>
+</html>
