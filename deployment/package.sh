@@ -8,6 +8,11 @@ BUILD_DIR="${ROOT_DIR}/build"
 DIST_DIR="${ROOT_DIR}/dist"
 PACKAGE_NAME="${APP_NAME}-${VERSION}.zip"
 
+# Database credentials
+DB_USER="ko58"
+DB_PASS="jaks123!"
+DB_NAME="deployment_db"
+
 # Check if version argument is provided
 if [ -z "$VERSION" ]; then
     echo "Version number argument is missing. Usage: $0 <version>"
@@ -43,3 +48,10 @@ echo "Build package created: ${DIST_DIR}/${PACKAGE_NAME}"
 
 scp "${DIST_DIR}/${PACKAGE_NAME}" ko58@10.244.108.27:/home/ko58/deploy
 
+# SQL statement to execute
+# Replace 'table_name' with the actual name of your table and ensure the column names match
+SQL="INSERT INTO table_name (version, status) VALUES ('$VERSION', 'deployed');"
+
+# Execute SQL statement
+# Use -h followed by the hostname if the database is on a remote server
+mysql -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "$SQL"
