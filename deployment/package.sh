@@ -46,12 +46,5 @@ cd ..
 
 echo "Build package created: ${DIST_DIR}/${PACKAGE_NAME}"
 
-scp "${DIST_DIR}/${PACKAGE_NAME}" ko58@10.244.108.27:/home/ko58/deploy
-
-# SQL statement to execute
-# Replace 'table_name' with the actual name of your table and ensure the column names match
-SQL="INSERT INTO table_name (version, status) VALUES ('$VERSION', 'deployed');"
-
-# Execute SQL statement
-# Use -h followed by the hostname if the database is on a remote server
-mysql -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "$SQL"
+scp "${DIST_DIR}/${PACKAGE_NAME}" ko58@10.244.108.27:/home/ko58/deploy && \
+ssh ko58@10.244.108.27 "/home/ko58/deploy/deployment.sh ${PACKAGE_NAME}"
