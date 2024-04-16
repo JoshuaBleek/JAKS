@@ -35,3 +35,5 @@ mkdir -p $DIST_DIR
 cd $BUILD_DIR
 zip -r "../${DIST_DIR}/${PACKAGE_NAME}" *
 cd ..
+
+scp "${DIST_DIR}/${PACKAGE_NAME}" ko58@192.168.1.227:/home/ko58/deploy
