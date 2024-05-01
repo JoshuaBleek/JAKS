@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #registerForm {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        #logo {
+            margin-bottom: 15px;
+        }
+
+        #logo img {
+            width: 300px;
+            height: auto;
+        }
+    </style>
+    <!-- Add any additional head elements here -->
+</head>
+<body>
+    <h1>Register Page</h1>
+    <form id="registerForm" onsubmit="sendRegisterData(); return false;">
+        <div id="logo">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <button type="submit">Register</button>
+        </div>
+        <p>Already have an account? <a href="index.html">Login here!</a></p>
+    </form>
+
+    <script>
+        function sendRegisterData() {
+            var xhr = new XMLHttpRequest();
+            var url = "http://10.244.168.117/authenticate_producer.php"; // URL of your producer.php script
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (xhr.status === 200) {
+                        alert(response.message); // Show a success message
+                        window.location.href = 'index.html'; // Redirect to login page
+                    } else {
+                        alert('Error: ' + response.error); // Show an error message
+                    }
+                }
+            };
+
+            var data = JSON.stringify({
+                "name": document.getElementById("name").value,
+                "email": document.getElementById("email").value,
+                "username": document.getElementById("username").value,
+                "password": document.getElementById("password").value
+            });
+
+            xhr.send(data);
+        }
+    </script>
+</body>
+</html>

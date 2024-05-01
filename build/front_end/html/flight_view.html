@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight View</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .flight-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        #usernameDisplay {
+        color: white;
+        margin-right: 10px; /* Optional: adds some spacing between username and logout button */
+    }
+        .flight-card {
+            width: 300px;
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .flight-card:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .flight-card h2 {
+            color: #333;
+        }
+
+        .flight-card p {
+            color: #777;
+        }
+
+        .book-button {
+            background-color: #333;
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .book-button:hover {
+            background-color: #555;
+        }
+    </style>
+    <!-- Add any additional head elements here -->
+</head>
+<body>
+    <header>
+        <h1>JAKS GlideGuide</h1>
+        <div class="logo-container">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+    </header>
+    
+    <nav>
+        <a href="flight_view.html">Flight View</a>
+        <a href="payments.html">Payment</a>
+        <a href="rate.html">Rate Destination</a>
+        <a href="questionnaire.html">Questionnaire</a>
+        <a href="refer.html">Refer a Friend</a>
+        <a href="upcoming_flights.html">Upcoming Flights</a>
+        <div class="right-links">
+            <span id="usernameDisplay"></span>
+    <button id="logoutButton" style="display:none;">Logout</button>
+    <a href="index.html" style="display:none;" id="loginLink">Login</a>
+    <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
+        </div>
+    </nav>
+    
+    <h1>Bookable Flights</h1>
+    <div class="flight-container" id="flight-container">
+        <!-- This div will contain flight cards -->
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const username = localStorage.getItem('username');
+    if (username) {
+        document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
+        document.getElementById('logoutButton').style.display = 'inline';
+        document.getElementById('loginLink').style.display = 'none';
+        document.getElementById('registerLink').style.display = 'none';
+
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            localStorage.removeItem('username'); // Clear username from storage
+            window.location.href = 'index.html'; // Redirect to the login page
+        });
+    } else {
+        document.getElementById('usernameDisplay').textContent = '';
+        document.getElementById('logoutButton').style.display = 'none';
+        document.getElementById('loginLink').style.display = 'inline';
+        document.getElementById('registerLink').style.display = 'inline';
+    }
+    });
+
+
+            function fetchFlightData() {
+                fetch('https://test.api.amadeus.com/v1/security/oauth2/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'grant_type=client_credentials&client_id=AXm9rayIQaHGYN6QEJUWsiy1NrAmwtkr&client_secret=3XepioE3VCVXuY4b'
+                })
+                .then(response => response.json())
+                .then(tokenData => {
+                    const accessToken = tokenData.access_token;
+                    const apiUrl = 'https://test.api.amadeus.com/v1/shopping/flight-destinations?origin=PAR&maxPrice=2000';
+    
+                    fetch(apiUrl, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch flight data');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const flightContainer = document.getElementById('flight-container');
+                        if (!flightContainer) {
+                            throw new Error('Flight container not found');
+                        }
+                        flightContainer.innerHTML = ''; // Clear existing content
+    
+                        data.data.forEach(destination => {
+                            const flightCard = document.createElement('div');
+                            flightCard.classList.add('flight-card');
+
+                            const destinationName = document.createElement('h2');
+                            destinationName.textContent = `Flight to ${destination.destination}`;
+
+                            const departureDate = document.createElement('p');
+                            departureDate.textContent = `Departure: ${destination.departureDate}`;
+
+                            const price = document.createElement('p');
+                            price.textContent = `Price: $${destination.price.total}`;
+
+                            const bookButton = document.createElement('button');
+                            bookButton.classList.add('book-button');
+                            bookButton.textContent = 'Book Now';
+                            // Updated event listener
+                            bookButton.addEventListener('click', function() {
+                                // Example flight data object
+                                const flightData = {
+                                    destination: destination.destination,
+                                    departureDate: destination.departureDate,
+                                    price: destination.price.total
+                                };
+
+                                // Store in localStorage
+                                localStorage.setItem('bookedFlight', JSON.stringify(flightData));
+
+                                window.location.href = 'payments.html?from=booking';
+                            });
+
+
+                            flightCard.appendChild(destinationName);
+                            flightCard.appendChild(departureDate);
+                            flightCard.appendChild(price);
+                            flightCard.appendChild(bookButton);
+
+                            flightContainer.appendChild(flightCard);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching flight data:', error.message);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching access token:', error.message);
+                });
+            }
+    
+            // Call the function to fetch flight data when the page loads
+            fetchFlightData();
+        
+    </script>
+    
+    <!-- Your content goes here -->
+</body>
+</html>
