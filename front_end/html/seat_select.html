@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Seats</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .seat-map {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+            justify-items: center;
+            padding: 20px;
+            max-width: 300px;
+            margin: auto;
+        }
+        .seat {
+            width: 30px;
+            height: 30px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .selected {
+            background-color: #76B947; /* Green */
+        }
+        .occupied {
+            background-color: #FF6347; /* Tomato */
+            cursor: not-allowed;
+        }
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin: 20px auto;
+            max-width: 300px;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Select Your Seats</h1>
+        <div class="logo-container">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+    </header>
+
+    <nav>
+        <a href="flight_view.html">Flight View</a>
+        <a href="payments.html">Payment</a>
+        <a href="seat_select.html">Seat Selection</a>
+        <a href="rate.html">Rate Destination</a>
+        <a href="questionnaire.html">Questionnaire</a>
+        <a href="refer.html">Refer a Friend</a>
+        <a href="upcoming_flights.html">Upcoming Flights</a>
+        <a href="points.html">Points</a>
+    </nav>
+
+    <div class="seat-map" id="seat-map">
+        <!-- Seats will be generated here by JavaScript -->
+    </div>
+    <button onclick="confirmSeats()">Confirm Selection</button>
+
+    <script>
+        const seatMap = document.getElementById('seat-map');
+        const rows = 10; // Example: 10 rows
+        const cols = 6; // Example: 6 columns per row
+        const occupiedSeats = new Set(['1A', '1B', '2C']); // Preset occupied seats
+
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                const seatNum = String.fromCharCode(65 + col) + (row + 1); // Seat numbering as A1, B1, etc.
+                const seat = document.createElement('div');
+                seat.className = 'seat';
+                seat.id = seatNum;
+                seat.textContent = seatNum;
+
+                if (occupiedSeats.has(seatNum)) {
+                    seat.classList.add('occupied');
+                }
+
+                seat.onclick = function() {
+                    if (!seat.classList.contains('occupied')) {
+                        seat.classList.toggle('selected');
+                    }
+                };
+
+                seatMap.appendChild(seat);
+            }
+        }
+
+        function confirmSeats() {
+    const selectedSeats = [...document.querySelectorAll('.selected')].map(seat => seat.id);
+    localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats)); // Store only seat selections
+    window.location.href = 'upcoming_flights.html'; // Redirect to the Upcoming Flights page
+}
+
+
+    </script>
+</body>
+</html>
