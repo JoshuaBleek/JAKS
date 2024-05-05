@@ -10,60 +10,69 @@
 
 <body>
 
-<header>
-    <h1>JAKS GlideGuide</h1>
-    <div class="logo-container">
-        <a href="homepage.html">
-            <img src="jaks_logo.png" alt="JAKS Logo">
-        </a>
+    <header>
+        <h1>JAKS GlideGuide</h1>
+        <div class="logo-container">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+    </header>
+
+    <nav>
+        <a href="flight_view.html">Flight View</a>
+        <a href="payments.html">Payment</a>
+        <a href="rate.html">Rate Destination</a>
+        <a href="questionnaire.html">Questionnaire</a>
+        <a href="refer.html">Refer a Friend</a>
+        <a href="upcoming_flights.html">Upcoming Flights</a>
+        <a href="points.html">Points</a>
+        <a href="cancel.html">Cancel Flight</a>
+        <div class="right-links">
+            <span id="usernameDisplay"></span>
+            <div class="login-register-container">
+                <a href="index.html" style="display:none;" id="loginLink">Login</a>
+                <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
+                <button id="mobileViewToggle" style="display:none;">Toggle Mobile View</button>
+                <button id="logoutButton" style="display:none;">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="project-description">
+        <div class="textbox">
+            <p>Project Description:</p>
+            <p>This API is designed to provide comprehensive and real-time tracking of incoming and outgoing flights. It aims to streamline the integration of flight data into diverse applications, offering accurate and up-to-date information to enhance user experiences across various industries.</p>
+        </div>
     </div>
-</header>
 
-<nav>
-    <a href="flight_view.html">Flight View</a>
-    <a href="payments.html">Payment</a>
-    <a href="rate.html">Rate Destination</a>
-    <a href="questionnaire.html">Questionnaire</a>
-    <a href="refer.html">Refer a Friend</a>
-    <a href="upcoming_flights.html">Upcoming Flights</a>
-    <a href="points.html">Points</a>
-    <a href="cancel.html">Cancel Flight</a>
-    <div class="right-links">
-        <span id="usernameDisplay"></span>
-<button id="logoutButton" style="display:none;">Logout</button>
-<a href="index.html" style="display:none;" id="loginLink">Login</a>
-<a href="register_user.html" style="display:none;" id="registerLink">Register</a>
-    </div>
-</nav>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
+                document.getElementById('logoutButton').style.display = 'inline';
+                document.getElementById('loginLink').style.display = 'none';
+                document.getElementById('registerLink').style.display = 'none';
+                document.getElementById('logoutButton').addEventListener('click', function() {
+                    localStorage.removeItem('username'); // Clear username from storage
+                    window.location.href = 'index.html'; // Redirect to the login page
+                });
+            } else {
+                document.getElementById('usernameDisplay').textContent = '';
+                document.getElementById('logoutButton').style.display = 'none';
+                document.getElementById('loginLink').style.display = 'inline';
+                document.getElementById('registerLink').style.display = 'inline';
+            }
+            // Add event listener to toggle mobile view button
+            document.getElementById('mobileViewToggle').addEventListener('click', function() {
+                document.body.classList.toggle('mobile-view'); // Toggle mobile-view class on body
+            });
+            // Show the toggle button after setting up event listener
+            document.getElementById('mobileViewToggle').style.display = 'inline';
+        });
+    </script>
 
-<div class="project-description">
-    <div class="textbox">
-        <p>Project Description:</p>
-        <p>This API is designed to provide comprehensive and real-time tracking of incoming and outgoing flights. It aims to streamline the integration of flight data into diverse applications, offering accurate and up-to-date information to enhance user experiences across various industries.</p>
-    </div>
-</div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-
-        const username = localStorage.getItem('username');
-if (username) {
-    document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
-    document.getElementById('logoutButton').style.display = 'inline';
-    document.getElementById('loginLink').style.display = 'none';
-    document.getElementById('registerLink').style.display = 'none';
-
-    document.getElementById('logoutButton').addEventListener('click', function() {
-        localStorage.removeItem('username'); // Clear username from storage
-        window.location.href = 'index.html'; // Redirect to the login page
-    });
-} else {
-    document.getElementById('usernameDisplay').textContent = '';
-    document.getElementById('logoutButton').style.display = 'none';
-    document.getElementById('loginLink').style.display = 'inline';
-    document.getElementById('registerLink').style.display = 'inline';
-}
-});
-</script>
 </body>
 
 </html>

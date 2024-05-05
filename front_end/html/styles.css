@@ -151,11 +151,48 @@ button:hover {
     color: #333;
 }
 
-/* Responsive Styles for Project Description */
-@media screen and (max-width: 768px) {
-    .textbox {
-        padding: 15px;
-    }
+/* Additional CSS for alignment */
+.right-links {
+    display: flex;
+    align-items: center; /* Vertically align items */
+}
+
+.login-register-container {
+    margin-right: 5px; /* Adjust margin between buttons */
+}
+
+/* Add these styles for mobile-view */
+body.mobile-view nav {
+    text-align: center; /* Center align navigation links */
+}
+
+body.mobile-view nav a {
+    float: none; /* Remove float for better responsiveness */
+    display: block;
+    padding: 10px 0; /* Adjust padding for smaller screens */
+    text-align: center;
 }
 
 
+/* Add these styles for the Toggle Mobile View button */
+#mobileViewToggle {
+    background-color: #00c44b;
+    color: #fff;
+    padding: 20px 10px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: none; /* Initially hide the button */
+    margin-top: 5px; /* Adjust margin-top */
+    margin-right: 5px; /* Adjust margin-right */
+
+}
+
+#mobileViewToggle:hover {
+    background-color: #00b35a;
+}
+
+.right-links .login-register-container button {
+    margin-left: 10px; /* Adjust margin between buttons */
+    margin-right: 5px; /* Adjust margin-right */
+}
