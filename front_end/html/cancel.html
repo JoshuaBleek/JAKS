@@ -29,6 +29,7 @@
     <div class="right-links">
         <a href="index.html">Login</a>
         <a href="register_user.html">Register</a>
+        <button id="mobileViewToggle" style="display:none;">Toggle Mobile View</button>
     </div>
 </nav>
 
@@ -39,6 +40,17 @@
 </div>
 
 <script>
+// Add event listener to toggle mobile view button
+
+document.getElementById('mobileViewToggle').addEventListener('click', function() {
+
+document.body.classList.toggle('mobile-view'); // Toggle mobile-view class on body
+
+});
+
+// Show the toggle button after setting up event listener
+
+document.getElementById('mobileViewToggle').style.display = 'inline';
 document.getElementById('cancelFlight').addEventListener('click', function() {
     var confirmCancel = confirm("Confirm cancellation?");
     if (confirmCancel) {
@@ -48,6 +60,8 @@ document.getElementById('cancelFlight').addEventListener('click', function() {
         // If they cancel, do nothing or notify the user
         alert("Cancellation process stopped.");
     }
+    
+    
 });
 </script>
 
