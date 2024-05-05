@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Rating</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        #usernameDisplay {
+        color: white;
+        margin-right: 10px; /* Optional: adds some spacing between username and logout button */
+    }
+    </style>
+
+</head>
+<body>
+    <header>
+        <h1>JAKS GlideGuide</h1>
+        <div class="logo-container">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+    </header>
+    
+    <nav>
+        <a href="flight_view.html">Flight View</a>
+        <a href="payments.html">Payment</a>
+        <a href="rate.html">Rate Destination</a>
+        <a href="questionnaire.html">Questionnaire</a>
+        <a href="refer.html">Refer a Friend</a>
+        <a href="upcoming_flights.html">Upcoming Flights</a>
+        <div class="right-links">
+            <span id="usernameDisplay"></span>
+    <button id="logoutButton" style="display:none;">Logout</button>
+    <a href="index.html" style="display:none;" id="loginLink">Login</a>
+    <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
+        </div>
+    </nav>  
+
+<div class="container">
+    <h2>Rate Your Destination</h2>
+    <form>
+        <div class="star-rating">
+            <input type="radio" id="5-stars" name="rating" value="5" />
+            <label for="5-stars">&#9733;</label>
+            <input type="radio" id="4-stars" name="rating" value="4" />
+            <label for="4-stars">&#9733;</label>
+            <input type="radio" id="3-stars" name="rating" value="3" />
+            <label for="3-stars">&#9733;</label>
+            <input type="radio" id="2-stars" name="rating" value="2" />
+            <label for="2-stars">&#9733;</label>
+            <input type="radio" id="1-star" name="rating" value="1" />
+            <label for="1-star">&#9733;</label>
+        </div>
+
+        <div class="questionnaire">
+            <label for="destination">Destination Visited:</label>
+            <input type="text" id="destination" name="destination" required>
+            
+            <label for="visitAgain">Would you visit again?</label>
+            <select id="visitAgain" name="visitAgain">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="maybe">Maybe</option>
+            </select>
+
+            <label for="feedback">What did you like most about the destination?</label>
+            <textarea id="feedback" name="feedback" rows="4"></textarea>
+
+            <label for="improvements">Suggestions for improvement:</label>
+            <textarea id="improvements" name="improvements" rows="4"></textarea>
+        </div>
+
+        <button type="submit">Submit Review</button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+const username = localStorage.getItem('username');
+if (username) {
+document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
+document.getElementById('logoutButton').style.display = 'inline';
+document.getElementById('loginLink').style.display = 'none';
+document.getElementById('registerLink').style.display = 'none';
+
+document.getElementById('logoutButton').addEventListener('click', function() {
+localStorage.removeItem('username'); // Clear username from storage
+window.location.href = 'index.html'; // Redirect to the login page
+});
+} else {
+document.getElementById('usernameDisplay').textContent = '';
+document.getElementById('logoutButton').style.display = 'none';
+document.getElementById('loginLink').style.display = 'inline';
+document.getElementById('registerLink').style.display = 'inline';
+}
+});
+
+</script>
+</body>
+</html>
