@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Points</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        .points-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 60px; /* Adjusted for spacing */
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 24px;
+            text-align: center;
+        }
+        .bold-text {
+            text-align: center;
+            margin-top: 40px; /* Adjusted for spacing */
+            font-weight: bold;
+            font-size: 28px; /* Adjusted for larger font */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>JAKS GlideGuide</h1>
+        <div class="logo-container">
+            <a href="homepage.html">
+                <img src="jaks_logo.png" alt="JAKS Logo">
+            </a>
+        </div>
+    </header>
+    
+    <nav>
+        <a href="flight_view.html">Flight View</a>
+        <a href="payments.html">Payment</a>
+        <a href="rate.html">Rate Destination</a>
+        <a href="questionnaire.html">Questionnaire</a>
+        <a href="refer.html">Refer a Friend</a>
+        <a href="upcoming_flights.html">Upcoming Flights</a>
+        <a href="points.html">Points</a>
+        <a href="cancel.html">Cancel Flight</a>
+        <div class="right-links">
+            <span id="usernameDisplay"></span>
+            <button id="logoutButton" style="display:none;">Logout</button>
+            <a href="index.html" style="display:none;" id="loginLink">Login</a>
+            <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
+        </div>
+    </nav>
+
+    <div class="bold-text">View Your Points</div>
+
+    <div id="pointsDisplay" class="points-box">
+        Loading your points...
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let points = localStorage.getItem('userPoints') || '0'; // Get points or default to '0' if none
+            document.getElementById('pointsDisplay').textContent = "You have " + points + " points.";
+        });
+    </script>
+</body>
+</html>
