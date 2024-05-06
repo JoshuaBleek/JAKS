@@ -8,12 +8,11 @@
     <style>
         #usernameDisplay {
             color: white;
-            margin-right: 10px; 
+            margin-right: 10px; /* Optional: adds some spacing between username and logout button */
         }
     </style>
 </head>
 <body>
-
     <header>
         <h1>JAKS GlideGuide</h1>
         <div class="logo-container">
@@ -37,7 +36,6 @@
             <button id="logoutButton" style="display:none;">Logout</button>
             <a href="index.html" style="display:none;" id="loginLink">Login</a>
             <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
-            <button id="mobileViewToggle" style="display:none;">Toggle Mobile View</button>
         </div>
     </nav>
 
@@ -103,11 +101,6 @@
     </div>
 
     <script>
-        document.getElementById('mobileViewToggle').addEventListener('click', function() {
-            document.body.classList.toggle('mobile-view'); 
-        });
-        document.getElementById('mobileViewToggle').style.display = 'inline';
-
         document.addEventListener('DOMContentLoaded', function() {
             const username = localStorage.getItem('username');
             if (username) {
@@ -117,8 +110,8 @@
                 document.getElementById('registerLink').style.display = 'none';
 
                 document.getElementById('logoutButton').addEventListener('click', function() {
-                    localStorage.removeItem('username');
-                    window.location.href = 'index.html'; 
+                    localStorage.removeItem('username'); // Clear username from storage
+                    window.location.href = 'index.html'; // Redirect to the login page
                 });
             } else {
                 document.getElementById('usernameDisplay').textContent = '';
@@ -131,18 +124,12 @@
         document.getElementById('paymentForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
-            
-            const pointsEarned = 100; 
-            let currentPoints = parseInt(localStorage.getItem('userPoints')) || 0;
-            localStorage.setItem('userPoints', currentPoints + pointsEarned);
-            alert("You earned " + pointsEarned + " points!");
-
             // Clear previous error messages
             document.getElementById('nameError').textContent = '';
             document.getElementById('cardNumberError').textContent = '';
             document.getElementById('expiryDateError').textContent = '';
             document.getElementById('cvvError').textContent = '';
-            document.getElementById('streetError').textContent = '';
+            document.getElementId('streetError').textContent = '';
             document.getElementById('townError').textContent = '';
             document.getElementById('zipCodeError').textContent = '';
             document.getElementById('stateError').textContent = '';
@@ -164,12 +151,18 @@
             function validateAddressField(fieldId, errorMessage, maxLength = -1) {
                 let fieldValue = document.getElementById(fieldId).value.trim();
                 if (fieldValue.length === 0 || (maxLength > 0 && fieldValue.length !== maxLength)) {
-                    document.getElementId(fieldId + 'Error').textContent = errorMessage;
+                    document.getElementById(fieldId + 'Error').textContent = errorMessage;
                     isValid = false;
                 }
             }
 
             if (isValid) {
+                // Add points
+                const pointsEarned = 100; // Points earned per successful transaction
+                let currentPoints = parseInt(localStorage.getItem('userPoints')) || 0;
+                localStorage.setItem('userPoints', currentPoints + pointsEarned);
+                alert("Payment successful! You earned " + pointsEarned + " points.");
+
                 // Process payment
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "payment_producer.php", true);
@@ -184,7 +177,7 @@
 
                 var data = JSON.stringify({
                     "name": document.getElementById("nameOnCard").value,
-                    "cardNum": document.getElementId("cardNumber").value,
+                    "cardNum": document.getElementById("cardNumber").value,
                     "expiry": document.getElementById("expiryDate").value,
                     "cvv": document.getElementById("cvv").value,
                     "address": document.getElementById("street").value,
@@ -209,6 +202,5 @@
             }
         });
     </script>
-
 </body>
 </html>

@@ -5,8 +5,9 @@ body {
     padding: 0;
     overflow: auto;
     position: relative;
-    }
-    body::before {
+}
+
+body::before {
     content: '';
     position: fixed;
     top: 0;
@@ -15,24 +16,27 @@ body {
     height: 100%;
     background: url('background_image.webp') center center fixed;
     background-size: cover;
-    filter: blur(5px);
+    filter: blur(5px); /* Adjust the blur value as needed */
     z-index: -1;
-    }
-    header {
+}
+
+header {
     background-color: #333;
     color: #fff;
     padding: 15px;
     text-align: center;
     position: relative;
     z-index: 1;
-    }
-    nav {
+}
+
+nav {
     background-color: #444;
     overflow: hidden;
     position: relative;
     z-index: 1;
-    }
-    nav a {
+}
+
+nav a {
     float: left;
     display: block;
     color: #f2f2f2;
@@ -40,153 +44,118 @@ body {
     padding: 24px 16px;
     text-decoration: none;
     position: relative;
-    }
-    nav a:not(:last-child)::after {
+}
+
+nav a:not(:last-child)::after {
     content: "|";
     position: absolute;
     right: -8px;
     top: 50%;
     transform: translateY(-50%);
     color: #f2f2f2;
-    }
-    nav a:hover {
+}
+
+nav a:hover {
     background-color: #ddd;
     color: #333;
-    }
-    .right-links {
+}
+
+.right-links {
     float: right;
-    }
-    /* Add logo styles */
-    .logo-container {
+}
+
+/* Add logo styles */
+.logo-container {
     position: absolute;
     top: 5px;
     left: 5px;
-    }
-    .logo-container a {
-    width: 100%;
+}
+
+.logo-container a {
+        width: 100%;
     text-align: center;
-    }
-    /* Adjust the logo image size */
-    .logo-container img {
+}
+
+/* Adjust the logo image size */
+.logo-container img {
     width: 250px;
     height: auto;
-    }
-    /* Additional styles from homepage.html */
-    .right-links a[href="index.html"] {
+}
+
+/* Additional styles from homepage.html */
+.right-links a[href="index.html"] {
     background-color: #007bff;
     color: #fff;
     top: 10px;
     padding: 14px 16px;
     border-radius: 4px;
-    }
-    /* Styles from Mock Payment Form */
-    .payment-form {
+}
+
+/* Styles from Mock Payment Form */
+.payment-form {
     width: 300px;
     margin: 0 auto;
     padding: 50px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: white;
-    }
-    .form-group {
+}
+
+.form-group {
     margin-bottom: 20px;
-    }
-    .form-group label {
+}
+
+.form-group label {
     display: block;
-    }
-    .form-group input {
+}
+
+.form-group input {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
-    }
-    button {
-    background-color: #4CAF50;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
     color: white;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-    }
-    button:hover {
+}
+
+button:hover {
     opacity: 0.8;
-    }
-    .error {
+}
+
+.error {
     color: red;
     margin-top: 5px;
-    }
-    /* Additional Styles for Project Description */
-    .project-description {
+}
+
+/* Additional Styles for Project Description */
+.project-description {
     margin: 30px auto;
     max-width: 800px;
-    }
-    .textbox {
+}
+
+.textbox {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-    .textbox p {
+}
+
+.textbox p {
     margin: 0 0 15px;
     line-height: 1.5;
     color: #333;
+}
+
+/* Responsive Styles for Project Description */
+@media screen and (max-width: 768px) {
+    .textbox {
+        padding: 15px;
     }
-    /* Additional CSS for alignment */
-    .right-links {
-    display: flex;
-    align-items: center;
-    }
-    .login-register-container {
-    margin-right: 10px;
-    }
-    /* Add these styles for mobile-view */
-    body.mobile-view nav {
-    text-align: center;
-    }
-    body.mobile-view nav a {
-    float: none;
-    display: block;
-    padding: 10px 0;
-    text-align: center;
-    }
-    /* Add these styles for the Toggle Mobile View button */
-    #mobileViewToggle {
-    background-color: #00c44b;
-    color: #fff;
-    padding: 20px 10px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    display: none;
-    }
-    #mobileViewToggle:hover {
-    background-color: #00b35a;
-    }
-    .right-links .login-register-container button {
-    margin-left: 0px;
-    margin-right: 10px;
-    }
-    /* Example media query for smaller screens */
-    @media only screen and (max-width: 800px) {
-    }
-    /* Adjust the logo container for mobile view */
-    body.mobile-view .logo-container {
-    position: relative;
-    top: auto;
-    transform: none;
-    }
-    /* Hide the heading in mobile view */
-    body.mobile-view header h1 {
-    display: none;
-    }
-    .right-links .login-register-container button {
-    margin-right: 30px;
-    padding-left: 10px;
-    padding-right: 10px;
-    }
-    .right-links .login-register-container button:first-child {
-    margin-left: 0;
-    padding-left: 100px;
-    }
-    /* Optional: Adjust padding specifically for the "Register" button if you want */
-    .right-links .login-register-container button:nth-child(2) {
-    padding-left: 15px;
-    }
+}
+
+

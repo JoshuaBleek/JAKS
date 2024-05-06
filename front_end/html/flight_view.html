@@ -89,7 +89,6 @@
     <button id="logoutButton" style="display:none;">Logout</button>
     <a href="index.html" style="display:none;" id="loginLink">Login</a>
     <a href="register_user.html" style="display:none;" id="registerLink">Register</a>
-    <button id="mobileViewToggle" style="display:none;">Toggle Mobile View</button>
         </div>
     </nav>
     
@@ -117,18 +116,6 @@
         document.getElementById('loginLink').style.display = 'inline';
         document.getElementById('registerLink').style.display = 'inline';
     }
-
-// Add event listener to toggle mobile view button
-
-document.getElementById('mobileViewToggle').addEventListener('click', function() {
-
-document.body.classList.toggle('mobile-view'); // Toggle mobile-view class on body
-
-});
-
-// Show the toggle button after setting up event listener
-
-document.getElementById('mobileViewToggle').style.display = 'inline';
     });
 
 
