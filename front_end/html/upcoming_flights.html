@@ -134,12 +134,13 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const username = localStorage.getItem('username');
+        
                 if (username) {
                     document.getElementById('usernameDisplay').textContent = 'Welcome, ' + username;
                     document.getElementById('logoutButton').style.display = 'inline';
                     document.getElementById('loginLink').style.display = 'none';
                     document.getElementById('registerLink').style.display = 'none';
-            
+        
                     document.getElementById('logoutButton').addEventListener('click', function() {
                         localStorage.removeItem('username'); // Clear username from storage
                         window.location.href = 'index.html'; // Redirect to the login page
@@ -150,38 +151,39 @@
                     document.getElementById('loginLink').style.display = 'inline';
                     document.getElementById('registerLink').style.display = 'inline';
                 }
-            
-                // Load and display the booked flight and selected seats
+        
                 const flightContainer = document.querySelector('.flight-container');
                 const bookedFlight = JSON.parse(localStorage.getItem('bookedFlight'));
                 const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
-            
+        
                 if (bookedFlight && selectedSeats) {
+                    const flightDuration = getRandomFlightDuration();
                     const flightCard = document.createElement('div');
                     flightCard.classList.add('flight-card');
                     flightCard.innerHTML = `
                         <h2>Flight to ${bookedFlight.destination}</h2>
                         <p>Departure: ${bookedFlight.departureDate}</p>
                         <p>Price: $${bookedFlight.price}</p>
-                        <p>Selected Seats: ${selectedSeats.join(', ')}</p>`;
-            
+                        <p>Selected Seats: ${selectedSeats.join(', ')}</p>
+                        <p>Duration: ${flightDuration} hours</p>`;
+        
                     const discountInfo = document.createElement('p');
                     discountInfo.textContent = 'Refer a friend and get a 10% discount on your next booking!';
                     discountInfo.style.color = "#333";
                     discountInfo.style.marginTop = "10px";
                     discountInfo.style.textAlign = "center";
-                    
+        
                     flightCard.appendChild(discountInfo);
-            
+        
                     const referButton = document.createElement('button');
                     referButton.classList.add('refer-button');
                     referButton.textContent = 'Refer a Friend';
                     referButton.addEventListener('click', function() {
                         window.location.href = 'refer.html';
                     });
-            
+        
                     flightCard.appendChild(referButton);
-            
+        
                     const cancelButton = document.createElement('button');
                     cancelButton.classList.add('cancel-button');
                     cancelButton.textContent = 'Cancel Flight';
@@ -190,13 +192,20 @@
                         localStorage.removeItem('selectedSeats'); // Clear seat selection as well
                         window.location.reload();
                     });
-            
+        
                     flightCard.appendChild(cancelButton);
                     flightContainer.appendChild(flightCard);
                 }
             });
-            </script>
-            
+        
+            function getRandomFlightDuration() {
+                const minHours = 5;
+                const maxHours = 9;
+                // Generate a random duration between 5 and 9 hours, including decimals
+                return (Math.random() * (maxHours - minHours) + minHours).toFixed(1);
+            }
+        </script>
+        
         
 </body>
 </html>
