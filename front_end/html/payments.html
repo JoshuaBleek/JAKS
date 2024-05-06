@@ -8,11 +8,12 @@
     <style>
         #usernameDisplay {
             color: white;
-            margin-right: 10px; /* Optional: adds some spacing between username and logout button */
+            margin-right: 10px; 
         }
     </style>
 </head>
 <body>
+
     <header>
         <h1>JAKS GlideGuide</h1>
         <div class="logo-container">
@@ -102,17 +103,11 @@
     </div>
 
     <script>
-// Add event listener to toggle mobile view button
+        document.getElementById('mobileViewToggle').addEventListener('click', function() {
+            document.body.classList.toggle('mobile-view'); 
+        });
+        document.getElementById('mobileViewToggle').style.display = 'inline';
 
-document.getElementById('mobileViewToggle').addEventListener('click', function() {
-
-document.body.classList.toggle('mobile-view'); // Toggle mobile-view class on body
-
-});
-
-// Show the toggle button after setting up event listener
-
-document.getElementById('mobileViewToggle').style.display = 'inline';
         document.addEventListener('DOMContentLoaded', function() {
             const username = localStorage.getItem('username');
             if (username) {
@@ -122,8 +117,8 @@ document.getElementById('mobileViewToggle').style.display = 'inline';
                 document.getElementById('registerLink').style.display = 'none';
 
                 document.getElementById('logoutButton').addEventListener('click', function() {
-                    localStorage.removeItem('username'); // Clear username from storage
-                    window.location.href = 'index.html'; // Redirect to the login page
+                    localStorage.removeItem('username');
+                    window.location.href = 'index.html'; 
                 });
             } else {
                 document.getElementById('usernameDisplay').textContent = '';
@@ -136,12 +131,18 @@ document.getElementById('mobileViewToggle').style.display = 'inline';
         document.getElementById('paymentForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
+            
+            const pointsEarned = 100; 
+            let currentPoints = parseInt(localStorage.getItem('userPoints')) || 0;
+            localStorage.setItem('userPoints', currentPoints + pointsEarned);
+            alert("You earned " + pointsEarned + " points!");
+
             // Clear previous error messages
             document.getElementById('nameError').textContent = '';
             document.getElementById('cardNumberError').textContent = '';
             document.getElementById('expiryDateError').textContent = '';
             document.getElementById('cvvError').textContent = '';
-            document.getElementId('streetError').textContent = '';
+            document.getElementById('streetError').textContent = '';
             document.getElementById('townError').textContent = '';
             document.getElementById('zipCodeError').textContent = '';
             document.getElementById('stateError').textContent = '';
@@ -163,18 +164,12 @@ document.getElementById('mobileViewToggle').style.display = 'inline';
             function validateAddressField(fieldId, errorMessage, maxLength = -1) {
                 let fieldValue = document.getElementById(fieldId).value.trim();
                 if (fieldValue.length === 0 || (maxLength > 0 && fieldValue.length !== maxLength)) {
-                    document.getElementById(fieldId + 'Error').textContent = errorMessage;
+                    document.getElementId(fieldId + 'Error').textContent = errorMessage;
                     isValid = false;
                 }
             }
 
             if (isValid) {
-                // Add points
-                const pointsEarned = 100; // Points earned per successful transaction
-                let currentPoints = parseInt(localStorage.getItem('userPoints')) || 0;
-                localStorage.setItem('userPoints', currentPoints + pointsEarned);
-                alert("Payment successful! You earned " + pointsEarned + " points.");
-
                 // Process payment
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "payment_producer.php", true);
@@ -189,7 +184,7 @@ document.getElementById('mobileViewToggle').style.display = 'inline';
 
                 var data = JSON.stringify({
                     "name": document.getElementById("nameOnCard").value,
-                    "cardNum": document.getElementById("cardNumber").value,
+                    "cardNum": document.getElementId("cardNumber").value,
                     "expiry": document.getElementById("expiryDate").value,
                     "cvv": document.getElementById("cvv").value,
                     "address": document.getElementById("street").value,
@@ -214,5 +209,6 @@ document.getElementById('mobileViewToggle').style.display = 'inline';
             }
         });
     </script>
+
 </body>
 </html>
