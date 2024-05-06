@@ -1,4 +1,6 @@
 <?php
+require_once "error_handler.php";
+require_once "does not exist";
 
 require_once __DIR__ . '/vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
